@@ -1,0 +1,3 @@
+# This file should be empty unless configured
+# by the user. See the Prometheus auth and TLS
+# docs here: https://prometheus.io/docs/prometheus/latest/configuration/https/

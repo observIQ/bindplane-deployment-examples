@@ -1,0 +1,36 @@
+# Environment files
+.env
+.env.*
+!.env.template
+
+# Docker volumes
+docker-compose/postgres-data/
+
+# Terraform files
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+terraform/crash.log
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+
+# Local development
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Generated prometheus files
+docker-compose/prometheus/*.json 
