@@ -1,4 +1,17 @@
 # Let Helm create the namespace first
+locals {
+  chart_name  = "bindplane"
+  repository  = "https://observiq.github.io/bindplane-op-helm"
+  secret_name = "bindplane"
+  labels = {
+    "app.kubernetes.io/managed-by" = "Helm"
+  }
+  annotations = {
+    "meta.helm.sh/release-name"      = "bindplane"
+    "meta.helm.sh/release-namespace" = var.namespace
+  }
+}
+
 resource "kubernetes_namespace" "bindplane" {
   provider = kubernetes.gke
   metadata {
@@ -12,15 +25,10 @@ resource "kubernetes_secret" "bindplane_config" {
   depends_on = [kubernetes_namespace.bindplane]
 
   metadata {
-    name      = "bindplane"
-    namespace = var.namespace
-    labels = {
-      "app.kubernetes.io/managed-by" = "Helm"
-    }
-    annotations = {
-      "meta.helm.sh/release-name"      = "bindplane"
-      "meta.helm.sh/release-namespace" = var.namespace
-    }
+    name        = local.secret_name
+    namespace   = var.namespace
+    labels      = local.labels
+    annotations = local.annotations
   }
 
   data = {
@@ -34,12 +42,13 @@ resource "kubernetes_secret" "bindplane_config" {
 resource "helm_release" "bindplane" {
   provider = helm.gke
 
-  name             = "bindplane"
-  repository       = "https://observiq.github.io/bindplane-op-helm"
-  chart            = "bindplane"
+  name             = local.chart_name
+  repository       = local.repository
+  chart            = local.chart_name
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
+  timeout          = 900 # Increase timeout to 15 minutes (from default 5 minutes)
 
   values = [
     yamlencode(merge({
@@ -52,12 +61,13 @@ resource "helm_release" "bindplane" {
           database = var.database_name
           username = var.database_user
           password = var.database_password
+          sslmode  = "disable"
         }
       }
 
       # Use our created secret
       config = {
-        secret           = kubernetes_secret.bindplane_config.metadata[0].name
+        secret           = local.secret_name
         licenseUseSecret = true
         accept_eula      = true
       }
@@ -66,6 +76,54 @@ resource "helm_release" "bindplane" {
         readinessProbe = {
           initialDelaySeconds = 5
           periodSeconds       = 10
+        }
+        resources = {
+          limits = {
+            cpu    = "500m"
+            memory = "512Mi"
+          }
+          requests = {
+            cpu    = "200m"
+            memory = "256Mi"
+          }
+        }
+      }
+
+      # Add resource limits for server
+      server = {
+        resources = {
+          limits = {
+            cpu    = "1000m"
+            memory = "1Gi"
+          }
+          requests = {
+            cpu    = "500m"
+            memory = "512Mi"
+          }
+        }
+      }
+
+      # Add resource limits for Prometheus
+      prometheus = {
+        resources = {
+          limits = {
+            cpu    = "500m"
+            memory = "1Gi"
+          }
+          requests = {
+            cpu    = "200m"
+            memory = "512Mi"
+          }
+        }
+        # Add persistence configuration
+        persistence = {
+          enabled      = true
+          storageClass = "standard"
+          size         = "10Gi"
+          accessMode   = "ReadWriteOnce"
+          annotations = {
+            "helm.sh/resource-policy" = "keep"
+          }
         }
       }
     }, var.values))

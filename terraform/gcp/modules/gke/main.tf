@@ -1,6 +1,16 @@
 # Basic GKE cluster configuration
+locals {
+  cluster_name   = "${var.cluster_name}-cluster"
+  node_pool_name = "${var.cluster_name}-node-pool"
+  workload_pool  = "${var.project_id}.svc.id.goog"
+  base_labels = {
+    environment                             = var.environment
+    "goog-gke-node-pool-provisioning-model" = "on-demand"
+  }
+}
+
 resource "google_container_cluster" "primary" {
-  name     = "${var.cluster_name}-cluster"
+  name     = local.cluster_name
   location = var.region
   project  = var.project_id
 
@@ -25,13 +35,13 @@ resource "google_container_cluster" "primary" {
   }
 
   workload_identity_config {
-    workload_pool = "${var.project_id}.svc.id.goog"
+    workload_pool = local.workload_pool
   }
 }
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name       = "${var.cluster_name}-node-pool"
+  name       = local.node_pool_name
   location   = var.region
   cluster    = google_container_cluster.primary.name
   project    = var.project_id
@@ -47,13 +57,7 @@ resource "google_container_node_pool" "primary_nodes" {
     ]
 
     # Explicit label management
-    resource_labels = merge(
-      {
-        environment                             = var.environment,
-        "goog-gke-node-pool-provisioning-model" = "on-demand"
-      },
-      var.additional_node_labels
-    )
+    resource_labels = merge(local.base_labels, var.additional_node_labels)
 
     workload_metadata_config {
       mode = "GKE_METADATA"

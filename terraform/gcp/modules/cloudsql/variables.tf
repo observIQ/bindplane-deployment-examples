@@ -68,4 +68,16 @@ variable "deletion_protection" {
   description = "Whether or not to allow Terraform to destroy the instance"
   type        = bool
   default     = true
-} 
+}
+
+variable "high_availability" {
+  description = "Enable high availability for the database instance"
+  type        = bool
+  default     = false
+}
+
+variable "disk_autoresize" {
+  description = "Enable automatic disk resizing"
+  type        = bool
+  default     = true
+}

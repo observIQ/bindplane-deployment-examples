@@ -22,7 +22,7 @@ variable "database_password" {
 }
 
 variable "database_host" {
-  description = "Database host for Bindplane"
+  description = "The hostname or IP address of the database"
   type        = string
 }
 
@@ -30,4 +30,4 @@ variable "database_name" {
   description = "Database name for Bindplane"
   type        = string
   default     = "bindplane"
-} 
+}
