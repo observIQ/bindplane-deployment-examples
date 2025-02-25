@@ -21,8 +21,6 @@ This directory contains a Docker Compose configuration for running Bindplane loc
 1. Create a `.env` file in this directory with the following variables:
 
 ```env
-GOARCH=amd64
-GIT_SHA=latest
 BINDPLANE_LICENSE=your_license_here
 BINDPLANE_SESSIONS_SECRET=your_secret_here
 BINDPLANE_SECRET_KEY=your_secret_here
@@ -31,8 +29,8 @@ BINDPLANE_SECRET_KEY=your_secret_here
 Replace the placeholder values with your actual configuration:
 
 - `BINDPLANE_LICENSE`: Your Bindplane license key
-- `BINDPLANE_SESSIONS_SECRET`: A random string for session encryption
-- `BINDPLANE_SECRET_KEY`: A random string for API key encryption
+- `BINDPLANE_SESSIONS_SECRET`: A random UUID for session encryption (e.g., `uuidgen`)
+- `BINDPLANE_SECRET_KEY`: A random UUID for API key encryption (e.g., `uuidgen`)
 
 ## Usage
 
@@ -51,8 +49,8 @@ docker compose ps
 
 ### Accessing Services
 
-- Bindplane UI: http://localhost:3010
-- Prometheus UI: http://localhost:9010
+- Bindplane UI: http://localhost:3001
+- Prometheus UI: http://localhost:9090
 
 ### Stopping the Services
 
@@ -75,7 +73,7 @@ docker compose down -v
 
 2. **Bindplane fails to connect to PostgreSQL**
 
-   - Wait for PostgreSQL to fully initialize
+   - Wait for PostgreSQL to fully initialize (health check will ensure this)
    - Check the PostgreSQL logs: `docker compose logs postgres`
 
 3. **Transform agent connection issues**
@@ -97,14 +95,15 @@ docker compose logs -f
 
 ## Data Persistence
 
-Data is persisted in the following locations:
+Data is persisted in Docker volumes:
 
-- PostgreSQL data: Docker volume `postgres-data`
+- PostgreSQL data: `bindplane` volume
+- Prometheus data: `prometheus` volume
 
 To backup your data, you can use Docker volume backup commands:
 
 ```bash
-docker run --rm -v postgres-data:/data -v $(pwd):/backup alpine tar czf /backup/postgres-backup.tar.gz /data
+docker run --rm -v bindplane:/data -v $(pwd):/backup alpine tar czf /backup/bindplane-backup.tar.gz /data
 ```
 
 ## Security Notes
@@ -112,6 +111,7 @@ docker run --rm -v postgres-data:/data -v $(pwd):/backup alpine tar czf /backup/
 - This configuration uses default passwords for PostgreSQL. In a production environment, you should change these.
 - The default configuration exposes ports to localhost only.
 - Sensitive information should be stored in environment variables or secrets management.
+- Generate unique UUIDs for BINDPLANE_SESSIONS_SECRET and BINDPLANE_SECRET_KEY
 
 ## Additional Resources
 
