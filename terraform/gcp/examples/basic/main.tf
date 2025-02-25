@@ -23,7 +23,7 @@ module "networking" {
 }
 
 module "gke" {
-  depends_on = [module.project_setup]
+  depends_on = [module.networking]
   source     = "../../modules/gke"
 
   project_id             = var.project_id
@@ -69,6 +69,7 @@ resource "google_project_iam_member" "gke_sa_roles" {
 
 # Add after the GKE module
 module "cloudsql" {
+  depends_on = [module.gke]
   source = "../../modules/cloudsql"
 
   project_id        = var.project_id
@@ -102,17 +103,3 @@ module "helm_config" {
 }
 
 resource "random_uuid" "bindplane_session" {}
-
-// TODO(jsirianni): Remove this for now
-module "k8s_config" {
-  source = "../../modules/k8s-config"
-
-  namespace         = var.namespace
-  database_host     = module.cloudsql.private_ip_address
-  database_user     = var.database_user
-  database_password = var.database_password
-  database_name     = var.database_name
-  environment       = var.environment
-
-  depends_on = [module.gke]
-}
