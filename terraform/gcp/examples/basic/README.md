@@ -91,6 +91,7 @@ terraform apply bindplane.plan
 - Basic firewall rules:
   - Internal network communication
   - Health check access
+- PubSub topic for Bindplane event bus
 - GKE Cluster:
   - Private cluster configuration
   - Workload Identity enabled
@@ -129,7 +130,7 @@ kubectl cluster-info
 - `project_id`: Your GCP project ID
 - `database_password`: Password for the PostgreSQL user
 - `admin_password`: Password for the Bindplane admin user
-- `bindplane_license`: Your Bindplane license key
+- `bindplane_license`: Your Bindplane Enterprise or Google license key
 
 ### Optional Variables
 
