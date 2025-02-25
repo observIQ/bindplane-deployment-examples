@@ -14,6 +14,9 @@ locals {
   cluster_name   = "${var.cluster_name}-cluster"
   node_pool_name = "${var.cluster_name}-node-pool"
   workload_pool  = "${var.project_id}.svc.id.goog"
+
+  // TODO(jsirianni): Are these necessary? Why not expose them
+  // so the user can set them?
   base_labels = {
     environment                             = var.environment
     "goog-gke-node-pool-provisioning-model" = "on-demand"
@@ -41,7 +44,7 @@ resource "google_container_cluster" "primary" {
 
   private_cluster_config {
     enable_private_nodes    = true
-    enable_private_endpoint = false
+    enable_private_endpoint = false // TODO(jsirianni): Make this configurable, but understand the implications
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
 
@@ -63,6 +66,9 @@ resource "google_container_node_pool" "primary_nodes" {
     disk_size_gb = var.disk_size_gb
 
     service_account = var.node_service_account
+    // TODO(jsirianni): Should be configurable
+    // Minimum: Metrics, trace, log writer and Pub/Sub subscription create
+    // TODO(jsirianni): Is the previous todo required if we use workloads identity?
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -75,6 +81,7 @@ resource "google_container_node_pool" "primary_nodes" {
     }
   }
 
+  // TODO(jsirianni): At a minimum auto_upgrade should be configurable
   management {
     auto_repair  = true
     auto_upgrade = true

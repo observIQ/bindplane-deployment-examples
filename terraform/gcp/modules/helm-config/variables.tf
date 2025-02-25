@@ -16,6 +16,11 @@ variable "admin_username" {
   default     = "admin"
 }
 
+// TODO(jsirianni): We should document the implications of
+// plain text sensitive values. They are stored in plain text
+// in the state backend. Backends might use encryption at rest
+// but that might not be enough for most users.check"
+// This applies for all sensitive fields, not just "admin_password"
 variable "admin_password" {
   description = "Admin password for Bindplane"
   type        = string

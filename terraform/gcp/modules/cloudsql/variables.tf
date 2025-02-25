@@ -37,13 +37,13 @@ variable "database_password" {
 variable "instance_tier" {
   description = "The machine type to use"
   type        = string
-  default     = "db-f1-micro"
+  default     = "db-f1-micro" // TODO(jsirianni): We could bump this up, allowing this variable to be an optional override
 }
 
 variable "disk_size_gb" {
   description = "The size of data disk, in GB"
   type        = number
-  default     = 10
+  default     = 10 // TODO(jsirianni): We could bump this up, allowing this variable to be an optional override
 }
 
 variable "disk_type" {

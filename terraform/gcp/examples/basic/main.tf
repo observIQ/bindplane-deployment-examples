@@ -103,6 +103,7 @@ module "helm_config" {
 
 resource "random_uuid" "bindplane_session" {}
 
+// TODO(jsirianni): Remove this for now
 module "k8s_config" {
   source = "../../modules/k8s-config"
 
