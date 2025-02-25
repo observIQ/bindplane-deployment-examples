@@ -33,17 +33,17 @@ brew install kubectl
 gcloud components install gke-gcloud-auth-plugin
 ```
 
-### Linux (Ubuntu/Debian)
+### Linux
+
+Tools can be installed using the following documentation:
+
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+- [Gcloud SDK](https://cloud.google.com/sdk/docs/install#linux)
+
+Once Gcloud SDK is installed, install the GKE auth plugin:
 
 ```bash
-# Install Google Cloud SDK (if not already installed)
-# See: https://cloud.google.com/sdk/docs/install
-
-# Install kubectl
-sudo apt-get install kubectl
-
-# Install GKE auth plugin
-sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+gcloud components install gke-gcloud-auth-plugin
 ```
 
 ## Usage
@@ -73,13 +73,13 @@ terraform init
 4. Review the plan:
 
 ```bash
-terraform plan
+terraform plan -out bindplane.plan
 ```
 
 5. Apply the configuration:
 
 ```bash
-terraform apply
+terraform apply bindplane.plan
 ```
 
 ## Components Created
