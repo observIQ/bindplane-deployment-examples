@@ -1,0 +1,16 @@
+project_id   = "your-project-id"
+region       = "us-central1"
+cluster_name = "bindplane"
+
+# Required for Cloud SQL
+database_password = "your-secure-password"
+
+# Required for Bindplane
+admin_password    = "your-secure-admin-password"
+bindplane_license = "your-bindplane-license-key"
+
+# Optional overrides
+# network_name = "bindplane-custom"
+# subnet_ip_range = "10.0.0.0/20"
+# pods_ip_range = "10.1.0.0/16"
+# services_ip_range = "10.2.0.0/20" 
