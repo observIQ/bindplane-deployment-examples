@@ -22,13 +22,6 @@ module "networking" {
   services_ip_range = var.services_ip_range
 }
 
-module "pubsub" {
-  source     = "../../modules/pubsub"
-
-  project_id = var.project_id
-  topic_name = var.cluster_name
-}
-
 module "gke" {
   depends_on = [module.networking]
   source     = "../../modules/gke"
@@ -105,9 +98,7 @@ module "helm_config" {
   database_name     = var.database_name
   database_user     = var.database_user
   database_password = var.database_password
-  pubsub_project_id = var.project_id
-  pubsub_topic_name   = module.pubsub.topic_name
-
+  project_id        = var.project_id
 
   depends_on = [module.gke]
 }
