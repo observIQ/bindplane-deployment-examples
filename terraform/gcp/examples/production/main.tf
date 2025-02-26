@@ -10,6 +10,7 @@ locals {
   max_nodes      = 3
   disk_size_gb   = 500
   instance_tier  = "db-custom-4-16384"
+  max_connections = 400
 }
 
 module "project_setup" {
@@ -143,6 +144,7 @@ module "cloudsql" {
   database_name     = local.database_name
   database_user     = local.database_user
   database_password = var.database_password
+  max_connections   = local.max_connections
 
   # Optional overrides
   instance_tier       = local.instance_tier

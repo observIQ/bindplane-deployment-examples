@@ -11,6 +11,21 @@ terraform {
 
 locals {
   instance_name = "${var.instance_name}-instance"
+<<<<<<< HEAD
+=======
+  database_flags = [
+    {
+      name  = "max_connections"
+      value = var.max_connections
+    },
+    {
+      name  = "log_min_duration_statement"
+      value = "300" // TODO(jsirianni): This is in milliseconds and should be higher. Default is -1 (disabled)
+      // https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT
+      // https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT
+    }
+  ]
+>>>>>>> c654be1 (configurable max connections)
   backup_config = {
     enabled                        = var.backup_enabled
     start_time                     = var.backup_start_time

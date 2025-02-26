@@ -75,6 +75,7 @@ variable "disk_autoresize" {
   default     = true
 }
 
+<<<<<<< HEAD
 variable "database_flags" {
   description = "Database flags for the CloudSQL instance"
   type = list(object({
@@ -109,4 +110,10 @@ variable "point_in_time_recovery_enabled" {
   description = "Whether point-in-time recovery is enabled"
   type        = bool
   default     = true
+=======
+variable "max_connections" {
+  description = "The maximum number of connections to the database"
+  type        = number
+  default     = 100
+>>>>>>> c654be1 (configurable max connections)
 }

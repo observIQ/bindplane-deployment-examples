@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-=======
-locals {
-  namespace      = "bindplane"
-  database_name  = "bindplane"
-  database_user  = "bindplane"
-  admin_username = "admin"
-  environment    = "development"
-  machine_type   = "e2-standard-2"
-  initial_nodes  = 1
-  min_nodes      = 1
-  max_nodes      = 3
-  instance_tier  = "db-custom-2-8192"
-}
-
->>>>>>> e0f8d4c (optimize cloudsql defaults)
 module "project_setup" {
   source     = "../../modules/project-setup"
   project_id = var.project_id
@@ -100,22 +84,6 @@ module "cloudsql" {
   instance_tier       = var.instance_tier
   disk_size_gb        = var.disk_size_gb
   deletion_protection = false # Easier cleanup for testing
-}
-
-module "helm_config" {
-  source = "../../modules/helm-config"
-
-  namespace         = var.namespace
-  admin_username    = var.admin_username
-  admin_password    = var.admin_password
-  sessions_secret   = random_uuid.bindplane_session.result
-  license_key       = var.bindplane_license
-  database_host     = module.cloudsql.private_ip_address
-  database_name     = var.database_name
-  database_user     = var.database_user
-  database_password = var.database_password
-
-  depends_on = [module.gke]
 }
 
 resource "random_uuid" "bindplane_session" {}
