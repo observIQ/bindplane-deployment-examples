@@ -56,9 +56,9 @@ resource "helm_release" "bindplane" {
   values = [
     yamlencode(merge({
       eventbus = {
-        type = var.project_id != "" ? "pubsub" : "local"
+        type = var.eventbus_type
         pubsub = {
-          projectid = var.project_id
+          projectid = var.pubsub_project_id
           topic   = var.pubsub_topic_name
         }
       }

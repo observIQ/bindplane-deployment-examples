@@ -98,7 +98,6 @@ module "helm_config" {
   database_name     = var.database_name
   database_user     = var.database_user
   database_password = var.database_password
-  project_id        = var.project_id
 
   depends_on = [module.gke]
 }

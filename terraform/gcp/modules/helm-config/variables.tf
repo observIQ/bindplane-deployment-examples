@@ -67,7 +67,13 @@ variable "database_password" {
   sensitive   = true
 }
 
-variable "project_id" {
+variable "eventbus_type" {
+  description = "Type of event bus to use. One of 'pubsub' or 'nats'"
+  type        = string
+  default     = ""
+}
+
+variable "pubsub_project_id" {
   description = "The project ID to host the PubSub topic"
   type        = string
   default     = ""
