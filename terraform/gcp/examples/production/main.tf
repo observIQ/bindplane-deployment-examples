@@ -123,8 +123,8 @@ module "helm_config" {
   database_name     = local.database_name
   database_user     = local.database_user
   database_password = var.database_password
-  pubsub_project_id = var.project_id
-  pubsub_topic_name   = module.pubsub.topic_name
+  project_id        = var.project_id
+  pubsub_topic_name = module.pubsub.topic_name
 
 
   depends_on = [module.gke]
