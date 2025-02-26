@@ -7,7 +7,7 @@ variable "namespace" {
 variable "chart_version" {
   description = "Version of the Bindplane Helm chart"
   type        = string
-  default     = "1.26.6" # Latest version from @https://github.com/observIQ/bindplane-op-helm/releases
+  default     = "1.27.0" # Latest version from @https://github.com/observIQ/bindplane-op-helm/releases
 }
 
 variable "admin_username" {
