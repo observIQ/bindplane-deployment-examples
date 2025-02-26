@@ -29,6 +29,12 @@ brew install google-cloud-sdk
 # Install kubectl
 brew install kubectl
 
+# Install jq
+brew install jq
+
+# Install Helm
+brew install helm
+
 # Install GKE auth plugin
 gcloud components install gke-gcloud-auth-plugin
 ```
@@ -39,11 +45,24 @@ Tools can be installed using the following documentation:
 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [Gcloud SDK](https://cloud.google.com/sdk/docs/install#linux)
+- [JQ](https://www.baeldung.com/linux/jq-command-json)
+- [Helm](https://helm.sh/docs/helm/helm_install/)
 
 Once Gcloud SDK is installed, install the GKE auth plugin:
 
 ```bash
 gcloud components install gke-gcloud-auth-plugin
+```
+
+## Helm Setup
+
+Add the Bindplane Helm repository:
+
+```bash
+helm repo add bindplane \
+    https://observiq.github.io/bindplane-op-helm
+
+helm repo update
 ```
 
 ## Usage
@@ -80,6 +99,59 @@ terraform plan -out bindplane.plan
 
 ```bash
 terraform apply bindplane.plan
+```
+
+6. Generate Helm values file:
+
+```bash
+./values.gen.sh
+```
+
+7. Connect to the GKE cluster:
+
+```bash
+terraform output -raw gcloud_command | bash
+```
+
+9. Create namespace and license secret:
+
+Set `BINDPLANE_LICENSE` to your Bindplane license key and update
+`your-secure-password` with a secure password. This will be the
+password for the Bindplane admin user.
+
+```bash
+BINDPLANE_LICENSE="your-license-key"
+
+kubectl create namespace bindplane
+
+kubectl create secret generic bindplane \
+  --namespace bindplane \
+  --from-literal=license=$BINDPLANE_LICENSE \
+  --from-literal=username=admin \
+  --from-literal=password=your-secure-password \
+  --from-literal=sessions_secret=$(uuidgen)
+```
+
+10. Create database secret:
+
+```bash
+database_username=$(terraform output -raw database_username)
+database_password=$(terraform output -raw database_password)
+
+kubectl create secret generic bindplane-db \
+  --namespace bindplane \
+  --from-literal=username="${database_username}" \
+  --from-literal=password="${database_password}"
+```
+
+11. Deploy Bindplane:
+
+```bash
+helm upgrade \
+  --install bindplane \
+  --namespace bindplane \
+  bindplane/bindplane \
+  --values values.yaml
 ```
 
 ## Components Created

@@ -103,3 +103,9 @@ variable "transform_agent_replicas" {
   type        = number
   default     = 1
 }
+
+variable "bindplane_resources_cpu_request" {
+  description = "CPU request for Bindplane"
+  type        = string
+  default     = "1000m"
+}

@@ -43,4 +43,6 @@ override.tf.json
 *~
 
 # Generated prometheus files
-docker-compose/prometheus/*.json
+docker-compose/prometheus/*.json 
+
+values.yaml

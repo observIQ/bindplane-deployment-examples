@@ -39,6 +39,7 @@ resource "google_sql_database_instance" "instance" {
   project          = var.project_id
 
   settings {
+    edition           = "ENTERPRISE"
     tier              = var.instance_tier
     availability_type = var.high_availability ? "REGIONAL" : "ZONAL"
     disk_size         = var.disk_size_gb

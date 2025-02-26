@@ -82,6 +82,59 @@ terraform plan -out bindplane.plan
 terraform apply bindplane.plan
 ```
 
+6. Generate Helm values file:
+
+```bash
+./values.gen.sh
+```
+
+7. Connect to the GKE cluster:
+
+```bash
+terraform output -raw gcloud_command | bash
+```
+
+9. Create namespace and license secret:
+
+Set `BINDPLANE_LICENSE` to your Bindplane license key and update
+`your-secure-password` with a secure password. This will be the
+password for the Bindplane admin user.
+
+```bash
+BINDPLANE_LICENSE="your-license-key"
+
+kubectl create namespace bindplane
+
+kubectl create secret generic bindplane \
+  --namespace bindplane \
+  --from-literal=license=$BINDPLANE_LICENSE \
+  --from-literal=username=admin \
+  --from-literal=password=your-secure-password \
+  --from-literal=sessions_secret=$(uuidgen)
+```
+
+10. Create database secret:
+
+```bash
+database_username=$(terraform output -raw database_username)
+database_password=$(terraform output -raw database_password)
+
+kubectl create secret generic bindplane-db \
+  --namespace bindplane \
+  --from-literal=username="${database_username}" \
+  --from-literal=password="${database_password}"
+```
+
+11. Deploy Bindplane:
+
+```bash
+helm upgrade \
+  --install bindplane \
+  --namespace bindplane \
+  bindplane/bindplane \
+  --values values.yaml
+```
+
 ## Components Created
 
 - VPC network

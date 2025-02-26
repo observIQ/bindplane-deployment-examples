@@ -16,4 +16,30 @@ output "pods_ip_range_name" {
 output "services_ip_range_name" {
   description = "The name of the secondary IP range for services"
   value       = module.networking.services_ip_range_name
+} 
+
+output "database_host" {
+  description = "The host of the database"
+  value       = module.cloudsql.database_host
+}
+
+output "database_name" {
+  description = "The name of the database"
+  value       = module.cloudsql.database_name
+}
+
+output "database_username" {
+  description = "The user of the database"
+  value       = module.cloudsql.database_user
+}
+
+output "database_password" {
+  description = "The password of the database"
+  value       = var.database_password
+  sensitive   = true
+}
+
+output "gcloud_command" {
+  description = "The command to connect to the database"
+  value       = "gcloud container clusters get-credentials ${module.gke.cluster_name} --region ${var.region} --project ${var.project_id}"
 }

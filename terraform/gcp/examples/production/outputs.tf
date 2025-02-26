@@ -17,3 +17,44 @@ output "services_ip_range_name" {
   description = "The name of the secondary IP range for services"
   value       = module.networking.services_ip_range_name
 } 
+
+output "database_host" {
+  description = "The host of the database"
+  value       = module.cloudsql.database_host
+}
+
+output "database_name" {
+  description = "The name of the database"
+  value       = module.cloudsql.database_name
+}
+
+output "database_username" {
+  description = "The user of the database"
+  value       = module.cloudsql.database_user
+}
+
+output "database_password" {
+  description = "The password of the database"
+  value       = var.database_password
+  sensitive   = true
+}
+
+output "gcloud_command" {
+  description = "The command to connect to the database"
+  value       = "gcloud container clusters get-credentials ${module.gke.cluster_name} --region ${var.region} --project ${var.project_id}"
+}
+
+output "bindplane_pubsub_project_id" {
+  description = "The project ID for the Pub/Sub topic used by BindPlane"
+  value       = var.project_id
+}
+
+output "bindplane_pubsub_topic" {
+  description = "The topic ID for the Pub/Sub topic used by BindPlane"
+  value       = module.pubsub.topic_name
+}
+
+output "bindplane_iam_service_account_email" {
+  description = "The email address of the IAM service account used by BindPlane"
+  value       = google_service_account.bindplane.email
+}

@@ -94,28 +94,10 @@ resource "helm_release" "bindplane" {
       }
 
       # Add resource limits for server
-      resources = {
-        requests = {
-          cpu    = "1000m"
-          memory = "1Gi"
-        }
-        limits = {
-          memory = "1Gi"
-        }
-      }
+      resources = var.bindplane_resources
 
       # Add resources for Prometheus
-      prometheus = {
-        resources = {
-          requests = {
-            cpu    = "1000m"
-            memory = "1Gi"
-          }
-          limits = {
-            memory = "1Gi"
-          }
-        }
-      }
+      prometheus = prometheus_resources
 
     }, var.values))
   ]
