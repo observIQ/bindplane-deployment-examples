@@ -11,6 +11,13 @@ locals {
   disk_size_gb   = 500
   instance_tier  = "db-custom-4-16384"
   max_connections = 400
+
+  // Five bindplane pods for handling UI, API
+  // and OpAMP workloads. A single jobs pods
+  // will deployed for a total of 6 pods.
+  bindplane_replicas = 5
+
+  transform_agent_replicas = 2
 }
 
 module "project_setup" {
@@ -173,6 +180,8 @@ module "helm_config" {
   pubsub_project_id = var.project_id
   pubsub_topic_name = module.pubsub.topic_name
   wif_service_account_email = google_service_account.bindplane.email
+  bindplane_replicas = local.bindplane_replicas
+  transform_agent_replicas = local.transform_agent_replicas
 
   depends_on = [
     google_service_account.bindplane,

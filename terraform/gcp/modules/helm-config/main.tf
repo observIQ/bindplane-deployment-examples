@@ -52,6 +52,8 @@ resource "helm_release" "bindplane" {
 
   values = [
     yamlencode(merge({
+      replicas = var.bindplane_replicas
+
       serviceAccount = {
         annotations = {
           "iam.gke.io/gcp-service-account" = var.wif_service_account_email
@@ -88,59 +90,33 @@ resource "helm_release" "bindplane" {
       }
 
       transformAgent = {
-        readinessProbe = {
-          initialDelaySeconds = 5
-          periodSeconds       = 10
-        }
-        resources = {
-          limits = {
-            cpu    = "500m"
-            memory = "512Mi"
-          }
-          requests = {
-            cpu    = "200m"
-            memory = "256Mi"
-          }
-        }
+        replicas = var.transform_agent_replicas
       }
 
       # Add resource limits for server
-      server = {
+      resources = {
+        requests = {
+          cpu    = "1000m"
+          memory = "1Gi"
+        }
+        limits = {
+          memory = "1Gi"
+        }
+      }
+
+      # Add resources for Prometheus
+      prometheus = {
         resources = {
-          limits = {
+          requests = {
             cpu    = "1000m"
             memory = "1Gi"
           }
-          requests = {
-            cpu    = "500m"
-            memory = "512Mi"
+          limits = {
+            memory = "1Gi"
           }
         }
       }
 
-      # Add resource limits for Prometheus
-      prometheus = {
-        resources = {
-          limits = {
-            cpu    = "500m"
-            memory = "1Gi"
-          }
-          requests = {
-            cpu    = "200m"
-            memory = "512Mi"
-          }
-        }
-        # Add persistence configuration
-        persistence = {
-          enabled      = true
-          storageClass = "standard"
-          size         = "10Gi"
-          accessMode   = "ReadWriteOnce"
-          annotations = {
-            "helm.sh/resource-policy" = "keep"
-          }
-        }
-      }
     }, var.values))
   ]
 
