@@ -38,8 +38,6 @@ resource "google_sql_database_instance" "instance" {
       enable_private_path_for_google_cloud_services = true
     }
 
-    // TODO(jsirianni): Think these should be variables, its possible backup time
-    // should be configurable to some maintenance window during low load.
     backup_configuration {
       enabled                        = local.backup_config.enabled
       start_time                     = local.backup_config.start_time
@@ -57,7 +55,6 @@ resource "google_sql_database_instance" "instance" {
       }
     }
 
-    # Security-related database flags
     database_flags {
       name  = "log_checkpoints"
       value = "on"
@@ -83,7 +80,6 @@ resource "google_sql_database_instance" "instance" {
       value = "all"
     }
 
-    # Additional security flags
     database_flags {
       name  = "log_disconnections"
       value = "on"
