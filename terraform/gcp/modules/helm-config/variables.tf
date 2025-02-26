@@ -90,3 +90,9 @@ variable "wif_service_account_email" {
   type        = string
   default     = ""
 }
+
+variable "database_max_connections" {
+  description = "Maximum number of connections to the database"
+  type        = number
+  default     = 80 // Less than the default Cloudsql limit of 100
+}

@@ -76,6 +76,7 @@ resource "helm_release" "bindplane" {
           username = var.database_user
           password = var.database_password
           sslmode  = "disable"
+          maxConnections = var.database_max_connections
         }
       }
 

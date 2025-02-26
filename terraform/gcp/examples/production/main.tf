@@ -168,6 +168,7 @@ module "helm_config" {
   database_name     = local.database_name
   database_user     = local.database_user
   database_password = var.database_password
+  database_max_connections = 50 // 50*6 replicas = 300 connections
   eventbus_type     = "pubsub"
   pubsub_project_id = var.project_id
   pubsub_topic_name = module.pubsub.topic_name
