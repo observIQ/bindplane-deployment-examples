@@ -1,0 +1,23 @@
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bindplane-ingress
+  namespace: bindplane
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    # The IP bindplane-external-ip was created by terraform
+    # in main.tf. Update if you changed the name variable.
+    # "<name>-external-ip"
+    kubernetes.io/ingress.global-static-ip-name: "bindplane-external-ip"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bindplane
+            port:
+              number: 3001

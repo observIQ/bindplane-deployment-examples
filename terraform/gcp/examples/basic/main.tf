@@ -103,3 +103,8 @@ module "cloudsql" {
 }
 
 resource "random_uuid" "bindplane_session" {}
+
+resource "google_compute_global_address" "bindplane_ip" {
+  name         = "${var.cluster_name}-external-ip"
+  address_type = "EXTERNAL"
+}

@@ -135,6 +135,56 @@ helm upgrade \
   --values values.yaml
 ```
 
+### Ingress (Optional)
+
+If you want to expose Bindplane to the internet, you can use an Ingress resource.
+Create the file `ingress.yaml` with the following content:
+
+```bash
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bindplane-ingress
+  namespace: bindplane
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    # The IP bindplane-external-ip was created by terraform
+    # in main.tf. Update if you changed the name variable.
+    # "<name>-external-ip"
+    kubernetes.io/ingress.global-static-ip-name: "bindplane-external-ip"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bindplane
+            port:
+              number: 3001
+```
+
+Apply the Ingress resource:
+
+```bash
+kubectl apply -f ingress.yaml
+```
+
+Wait for the Ingress to be ready:
+
+```bash
+kubectl get ingress -n bindplane
+```
+
+Once the Ingress is ready, you can access Bindplane at the IP address
+associated with the Ingress. It can take several minutes for the load
+balancer to be provisioned.
+
+> **_NOTE:_**  The [Bindplane Helm Chart](https://github.com/observIQ/bindplane-op-helm) supports
+ingress directly when a hostname is provided. This example uses a static IP address.
+
 ## Components Created
 
 - VPC network

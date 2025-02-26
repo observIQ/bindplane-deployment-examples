@@ -159,36 +159,9 @@ module "cloudsql" {
   deletion_protection = false # Easier cleanup for testing
 }
 
-# module "helm_config" {
-#   source = "../../modules/helm-config"
-#   providers = {
-#     helm.gke       = helm.gke
-#     kubernetes.gke = kubernetes.gke
-#   }
-
-#   namespace         = local.namespace
-#   admin_username    = local.admin_username
-#   admin_password    = var.admin_password
-#   sessions_secret   = random_uuid.bindplane_session.result
-#   license_key       = var.bindplane_license
-#   database_host     = module.cloudsql.private_ip_address
-#   database_name     = local.database_name
-#   database_user     = local.database_user
-#   database_password = var.database_password
-#   database_max_connections = 50 // 50*6 replicas = 300 connections
-#   eventbus_type     = "pubsub"
-#   pubsub_project_id = var.project_id
-#   pubsub_topic_name = module.pubsub.topic_name
-#   wif_service_account_email = google_service_account.bindplane.email
-#   bindplane_replicas = local.bindplane_replicas
-#   transform_agent_replicas = local.transform_agent_replicas
-
-#   depends_on = [
-#     google_service_account.bindplane,
-#     google_pubsub_topic_iam_binding.bindplane_pubsub_topic_permissions,
-#     module.gke,
-#     module.cloudsql
-#   ]
-# }
-
 resource "random_uuid" "bindplane_session" {}
+
+resource "google_compute_global_address" "bindplane_ip" {
+  name         = "${var.cluster_name}-external-ip"
+  address_type = "EXTERNAL"
+}
