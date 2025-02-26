@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+=======
+locals {
+  namespace      = "bindplane"
+  database_name  = "bindplane"
+  database_user  = "bindplane"
+  admin_username = "admin"
+  environment    = "development"
+  machine_type   = "e2-standard-2"
+  initial_nodes  = 1
+  min_nodes      = 1
+  max_nodes      = 3
+  instance_tier  = "db-custom-2-8192"
+}
+
+>>>>>>> e0f8d4c (optimize cloudsql defaults)
 module "project_setup" {
   source     = "../../modules/project-setup"
   project_id = var.project_id

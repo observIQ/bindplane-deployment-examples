@@ -4,12 +4,12 @@ locals {
   database_user  = "bindplane"
   admin_username = "admin"
   environment    = "development"
-  machine_type   = "e2-standard-2"
+  machine_type   = "n2-standard-2"
   initial_nodes  = 1
   min_nodes      = 1
   max_nodes      = 3
-  disk_size_gb   = 10
-  instance_tier  = "db-f1-micro"
+  disk_size_gb   = 500
+  instance_tier  = "db-custom-4-16384"
 }
 
 module "project_setup" {
