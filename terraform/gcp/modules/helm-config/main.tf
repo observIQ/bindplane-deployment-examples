@@ -48,10 +48,16 @@ resource "helm_release" "bindplane" {
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
-  timeout          = 300
+  timeout          = 60
 
   values = [
     yamlencode(merge({
+      serviceAccount = {
+        annotations = {
+          "iam.gke.io/gcp-service-account" = var.wif_service_account_email
+        }
+      }
+
       eventbus = {
         type = var.eventbus_type
         pubsub = {

@@ -88,6 +88,49 @@ resource "google_project_iam_member" "gke_sa_roles" {
   member  = "serviceAccount:${google_service_account.gke_sa.email}"
 }
 
+# Create service account for Bindplane Workload Identity Federation
+resource "google_service_account" "bindplane" {
+  account_id   = "${var.cluster_name}-bindplane-sa"
+  display_name = "Bindplane Service Account"
+  project      = var.project_id
+}
+
+
+# IAM Policy Binding: Allow Kubernetes service account to impersonate the GCP service account
+resource "google_service_account_iam_binding" "bindplane_workload_identity" {
+  service_account_id = google_service_account.bindplane.name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = [
+    "serviceAccount:${var.project_id}.svc.id.goog[${local.namespace}/bindplane]"
+  ]
+}
+
+# Grant Pub/Sub permissions to the service account
+resource "google_project_iam_member" "bindplane_pubsub_permissions" {
+  for_each = toset([
+    // TODO(jsirianni): This is invasive, because Bindplane attempts to create a topic
+    // on startup while checking if it exists. We can optimize this check to avoid this
+    // IAM requirement in the future.
+    "roles/pubsub.admin",
+  ])
+
+  project = var.project_id
+  role    = each.value
+  member  = "serviceAccount:${google_service_account.bindplane.email}"
+}
+
+// Grant permission to subscribe and publish the topic. This is scoped
+// to the topic itself, not the project.
+resource "google_pubsub_topic_iam_binding" "bindplane_pubsub_topic_permissions" {
+  topic = module.pubsub.topic_name
+  role  = "roles/pubsub.publisher"
+
+  members = [
+    "serviceAccount:${google_service_account.bindplane.email}"
+  ]
+}
+
 # Add after the GKE module
 module "cloudsql" {
   depends_on = [module.gke]
@@ -126,9 +169,14 @@ module "helm_config" {
   eventbus_type     = "pubsub"
   pubsub_project_id = var.project_id
   pubsub_topic_name = module.pubsub.topic_name
+  wif_service_account_email = google_service_account.bindplane.email
 
-
-  depends_on = [module.gke]
+  depends_on = [
+    google_service_account.bindplane,
+    google_pubsub_topic_iam_binding.bindplane_pubsub_topic_permissions,
+    module.gke,
+    module.cloudsql
+  ]
 }
 
 resource "random_uuid" "bindplane_session" {}

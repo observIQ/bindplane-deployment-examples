@@ -84,3 +84,9 @@ variable "pubsub_topic_name" {
   type        = string
   default     = ""
 }
+
+variable "wif_service_account_email" {
+  description = "Service account email for Workload Identity Federation, required when using PubSub event bus"
+  type        = string
+  default     = ""
+}
