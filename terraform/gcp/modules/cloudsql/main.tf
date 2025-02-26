@@ -19,11 +19,9 @@ locals {
       value = var.max_connections
     },
     {
-      name  = "log_min_duration_statement"
-      value = "300" // TODO(jsirianni): This is in milliseconds and should be higher. Default is -1 (disabled)
-      // https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT
-      // https://www.postgresql.org/docs/current/runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT
-    }
+      name  = "idle_in_transaction_session_timeout"
+      value = "180000"
+    },
   ]
 >>>>>>> c654be1 (configurable max connections)
   backup_config = {
