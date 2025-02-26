@@ -48,10 +48,7 @@ resource "helm_release" "bindplane" {
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
-  # TODO(jsirianni): This means a crash loop backoff
-  # will go on for 15 minutes before Terraform gives up
-  # Why not use the default 5 minute, the deployment is very fast?
-  timeout          = 900 # Increase timeout to 15 minutes (from default 5 minutes)
+  timeout          = 300
 
   values = [
     yamlencode(merge({
