@@ -67,7 +67,21 @@ jobs:
           cd docker-compose
           docker compose config -q
 
+      # Check for docker-compose.yml
+      - name: Check Docker Compose file
+        id: check_compose
+        run: |
+          if [ -f "docker-compose/docker-compose.yml" ] || [ -f "docker-compose/docker-compose.yaml" ]; then
+            echo "compose_file_exists=true" >> $GITHUB_OUTPUT
+            echo "Docker Compose file found"
+          else
+            echo "compose_file_exists=false" >> $GITHUB_OUTPUT
+            echo "No Docker Compose file found"
+          fi
+
+      # Run Trivy Config Scanner only if docker-compose.yml exists
       - name: Run Trivy Config Scanner
+        if: steps.check_compose.outputs.compose_file_exists == 'true'
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: "config"
@@ -76,3 +90,24 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           severity: "CRITICAL,HIGH"
+
+      # Add specific checks for docker-compose security
+      - name: Check Docker Compose Security
+        if: steps.check_compose.outputs.compose_file_exists == 'true'
+        run: |
+          cd docker-compose
+          echo "Performing additional security checks on docker-compose files..."
+
+          # Check for insecure configurations
+          echo "Checking for security issues in compose file..."
+          ! grep -q "privileged:\s*true" docker-compose.* || echo "⚠️ Warning: Privileged mode detected"
+          ! grep -q "host_network:\s*true" docker-compose.* || echo "⚠️ Warning: Host network mode detected"
+          ! grep -q "/var/run/docker.sock" docker-compose.* || echo "⚠️ Warning: Docker socket mount detected"
+
+          # Check for image tags
+          echo "Checking image references..."
+          ! grep -q "image:.*latest" docker-compose.* || echo "⚠️ Warning: 'latest' tag detected - consider pinning versions"
+
+          # Check for environment variables
+          echo "Checking environment variables..."
+          grep -q "env_file:" docker-compose.* && echo "✅ Using env_file for environment variables"

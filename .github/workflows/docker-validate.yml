@@ -42,24 +42,52 @@ jobs:
           cd docker-compose
           docker compose config -q
 
-      # Run Hadolint directly without SARIF output
+      # Check if any Dockerfiles exist before linting
+      - name: Check for Dockerfiles
+        id: check_dockerfiles
+        run: |
+          if [ -d "docker-compose" ] && [ -n "$(find docker-compose -name 'Dockerfile*' -print -quit)" ]; then
+            echo "dockerfiles_exist=true" >> $GITHUB_OUTPUT
+            echo "Dockerfiles found in docker-compose directory"
+          else
+            echo "dockerfiles_exist=false" >> $GITHUB_OUTPUT
+            echo "No Dockerfiles found in docker-compose directory - skipping Dockerfile linting"
+          fi
+
+      # Run Hadolint only if Dockerfiles exist
       - name: Lint Dockerfiles
+        if: steps.check_dockerfiles.outputs.dockerfiles_exist == 'true'
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: docker-compose/Dockerfile*
           failure-threshold: error
 
-      # Alternative approach using direct Hadolint installation
+      # Alternative approach only if Dockerfiles exist
       - name: Install Hadolint
+        if: steps.check_dockerfiles.outputs.dockerfiles_exist == 'true'
         run: |
           wget -q https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
           chmod +x hadolint-Linux-x86_64
           sudo mv hadolint-Linux-x86_64 /usr/local/bin/hadolint
 
+      # Run manual linting only if Dockerfiles exist
       - name: Run Hadolint manually
+        if: steps.check_dockerfiles.outputs.dockerfiles_exist == 'true'
         run: |
-          if [ -d "docker-compose" ] && [ -n "$(find docker-compose -name 'Dockerfile*' -print -quit)" ]; then
-            find docker-compose -name 'Dockerfile*' -exec hadolint {} \;
+          find docker-compose -name 'Dockerfile*' -exec hadolint {} \;
+
+      # Validate Docker Compose file structure
+      - name: Validate Docker Compose structure
+        run: |
+          cd docker-compose
+          if [ -f "docker-compose.yml" ] || [ -f "docker-compose.yaml" ]; then
+            echo "Validating docker-compose file..."
+            # Check for image references
+            grep -q "image:" docker-compose.* && echo "✅ Images are properly referenced"
+            # Look for common issues in compose files
+            echo "Checking for common issues..."
+            ! grep -q "latest" docker-compose.* || echo "⚠️ Warning: 'latest' tag detected - consider using specific versions"
+            ! grep -q "privileged: true" docker-compose.* || echo "⚠️ Warning: Privileged mode detected - review security implications"
           else
-            echo "No Dockerfiles found to lint"
+            echo "No docker-compose.yml or docker-compose.yaml found"
           fi
