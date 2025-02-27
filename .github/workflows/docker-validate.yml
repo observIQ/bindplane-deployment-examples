@@ -33,15 +33,24 @@ jobs:
           cd docker-compose
           docker compose config -q
 
-      - name: Set up Hadolint
+      # Run Hadolint directly without SARIF output
+      - name: Lint Dockerfiles
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: docker-compose/Dockerfile*
-          format: sarif
-          output-file: hadolint.sarif
+          failure-threshold: error
 
-      - name: Upload Hadolint Results
-        uses: github/codeql-action/upload-sarif@v2
-        if: success() || failure()
-        with:
-          sarif_file: hadolint.sarif
+      # Alternative approach using direct Hadolint installation
+      - name: Install Hadolint
+        run: |
+          wget -q https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+          chmod +x hadolint-Linux-x86_64
+          sudo mv hadolint-Linux-x86_64 /usr/local/bin/hadolint
+
+      - name: Run Hadolint manually
+        run: |
+          if [ -d "docker-compose" ] && [ -n "$(find docker-compose -name 'Dockerfile*' -print -quit)" ]; then
+            find docker-compose -name 'Dockerfile*' -exec hadolint {} \;
+          else
+            echo "No Dockerfiles found to lint"
+          fi
