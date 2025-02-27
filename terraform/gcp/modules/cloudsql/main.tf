@@ -53,6 +53,53 @@ resource "google_sql_database_instance" "instance" {
       value = "180000"
     }
 
+    # Security-related database flags
+    database_flags {
+      name  = "log_checkpoints"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_connections"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_statement"
+      value = "ddl"
+    }
+
+    database_flags {
+      name  = "cloudsql.enable_pgaudit"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
+    }
+
+    # Additional security flags
+    database_flags {
+      name  = "log_disconnections"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_min_messages"
+      value = "error"
+    }
+
+    database_flags {
+      name  = "log_hostname"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_lock_waits"
+      value = "on"
+    }
+
     maintenance_window {
       day          = 7 # Sunday
       hour         = 3
