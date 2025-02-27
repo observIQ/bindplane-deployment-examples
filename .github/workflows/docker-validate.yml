@@ -21,10 +21,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      # Set up Docker Compose explicitly
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+          docker compose version
+
       - name: Docker Compose Validation
         run: |
           cd docker-compose
-          docker-compose config -q
+          docker compose config -q
 
       - name: Set up Hadolint
         uses: hadolint/hadolint-action@v3.1.0
