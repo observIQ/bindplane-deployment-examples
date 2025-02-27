@@ -4,7 +4,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.23"
+      version = "~> 4.0"
     }
   }
 }
@@ -14,6 +14,7 @@ locals {
   cluster_name   = "${var.cluster_name}-cluster"
   node_pool_name = "${var.cluster_name}-node-pool"
   workload_pool  = "${var.project_id}.svc.id.goog"
+
   base_labels = {
     environment                             = var.environment
     "goog-gke-node-pool-provisioning-model" = "on-demand"
@@ -52,11 +53,11 @@ resource "google_container_cluster" "primary" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name       = local.node_pool_name
-  location   = var.region
-  cluster    = google_container_cluster.primary.name
-  project    = var.project_id
-  node_count = var.initial_node_count
+  name               = local.node_pool_name
+  location           = var.region
+  cluster            = google_container_cluster.primary.name
+  project            = var.project_id
+  initial_node_count = var.initial_node_count
 
   node_config {
     machine_type = var.machine_type

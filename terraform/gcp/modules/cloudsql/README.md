@@ -58,7 +58,3 @@ module "cloudsql" {
 | disk_type             | The type of data disk                                     | string | "PD_SSD"      |    no    |
 | backup_retention_days | The number of days to retain backups                      | number | 7             |    no    |
 | deletion_protection   | Whether or not to allow Terraform to destroy the instance | bool   | true          |    no    |
-
-## Outputs
-
-[To be added based on your needs - e.g., connection information, instance name, etc.]

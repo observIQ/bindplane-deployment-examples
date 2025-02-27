@@ -3,6 +3,11 @@ output "instance_name" {
   value       = google_sql_database_instance.instance.name
 }
 
+output "database_host" {
+  description = "The host of the database"
+  value       = google_sql_database_instance.instance.ip_address
+}
+
 output "database_name" {
   description = "The name of the database"
   value       = google_sql_database.database.name

@@ -73,22 +73,6 @@ helm repo update
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-1. (Optional) Configure the Terraform backend:
-
-```bash
-# Copy the backend configuration example
-cp backend.tf.example backend.tf
-
-# Edit backend.tf and set your GCS bucket name
-# This enables remote state storage and collaboration
-```
-
-1. Copy `terraform.tfvars.example` to `terraform.tfvars` and fill in your project details:
-
-```bash
-cp terraform.tfvars.example terraform.tfvars
-```
-
 2. (Optional) Configure the Terraform backend:
 
 ```bash
@@ -223,9 +207,6 @@ kubectl get ingress -n bindplane
 ```
 
 Once the Ingress is ready, you can access Bindplane at the IP address
-associated with the Ingress.
-
-Once the Ingress is ready, you can access Bindplane at the IP address
 associated with the Ingress. It can take several minutes for the load
 balancer to be provisioned.
 
@@ -292,7 +273,6 @@ kubectl cluster-info
 After the infrastructure is set up, you can proceed with:
 
 1. Accessing the Bindplane UI:
-
    ```bash
    kubectl port-forward svc/bindplane 3001:3001 -n bindplane
    # Visit http://localhost:3001
@@ -300,7 +280,6 @@ After the infrastructure is set up, you can proceed with:
    #   Username: admin
    #   Password: <value of admin_password>
    ```
-
 2. Verify all components are running:
 
    ```bash

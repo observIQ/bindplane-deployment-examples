@@ -4,18 +4,13 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.23"
+      version = "~> 4.0"
     }
   }
 }
 
 locals {
   instance_name = "${var.instance_name}-instance"
-  backup_config = {
-    enabled                        = var.backup_enabled
-    start_time                     = var.backup_start_time
-    point_in_time_recovery_enabled = var.point_in_time_recovery_enabled
-  }
 }
 
 # Cloud SQL instance
@@ -26,6 +21,7 @@ resource "google_sql_database_instance" "instance" {
   project          = var.project_id
 
   settings {
+    edition           = "ENTERPRISE"
     tier              = var.instance_tier
     availability_type = var.high_availability ? "REGIONAL" : "ZONAL"
     disk_size         = var.disk_size_gb
@@ -35,24 +31,26 @@ resource "google_sql_database_instance" "instance" {
     ip_configuration {
       ipv4_enabled                                  = false
       private_network                               = var.network_id
-      enable_private_path_for_google_cloud_services = true
+      enable_private_path_for_google_cloud_services = false
     }
 
     backup_configuration {
-      enabled                        = local.backup_config.enabled
-      start_time                     = local.backup_config.start_time
-      point_in_time_recovery_enabled = local.backup_config.point_in_time_recovery_enabled
+      enabled                        = var.backup_enabled
+      start_time                     = var.backup_start_time
+      point_in_time_recovery_enabled = var.point_in_time_recovery_enabled
       backup_retention_settings {
         retained_backups = var.backup_retention_days
       }
     }
 
-    dynamic "database_flags" {
-      for_each = var.database_flags
-      content {
-        name  = database_flags.value.name
-        value = database_flags.value.value
-      }
+    database_flags {
+      name  = "max_connections"
+      value = var.max_connections
+    }
+
+    database_flags {
+      name  = "idle_in_transaction_session_timeout"
+      value = "180000"
     }
 
     # Security-related database flags

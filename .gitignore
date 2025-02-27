@@ -13,6 +13,9 @@ docker-compose/postgres-data/
 *.tfvars
 !*.tfvars.example
 .terraform.lock.hcl
+*.out
+*.plan
+*.tfplan
 
 # Crash log files
 crash.log
@@ -40,4 +43,6 @@ override.tf.json
 *~
 
 # Generated prometheus files
-docker-compose/prometheus/*.json
+docker-compose/prometheus/*.json 
+
+values.yaml

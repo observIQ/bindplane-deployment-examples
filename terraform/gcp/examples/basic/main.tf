@@ -23,7 +23,7 @@ module "networking" {
 }
 
 module "gke" {
-  depends_on = [module.project_setup]
+  depends_on = [module.networking]
   source     = "../../modules/gke"
 
   project_id             = var.project_id
@@ -69,7 +69,8 @@ resource "google_project_iam_member" "gke_sa_roles" {
 
 # Add after the GKE module
 module "cloudsql" {
-  source = "../../modules/cloudsql"
+  depends_on = [module.gke]
+  source     = "../../modules/cloudsql"
 
   project_id        = var.project_id
   region            = var.region
@@ -85,33 +86,9 @@ module "cloudsql" {
   deletion_protection = false # Easier cleanup for testing
 }
 
-module "helm_config" {
-  source = "../../modules/helm-config"
-
-  namespace         = var.namespace
-  admin_username    = var.admin_username
-  admin_password    = var.admin_password
-  sessions_secret   = random_uuid.bindplane_session.result
-  license_key       = var.bindplane_license
-  database_host     = module.cloudsql.private_ip_address
-  database_name     = var.database_name
-  database_user     = var.database_user
-  database_password = var.database_password
-
-  depends_on = [module.gke]
-}
-
 resource "random_uuid" "bindplane_session" {}
 
-module "k8s_config" {
-  source = "../../modules/k8s-config"
-
-  namespace         = var.namespace
-  database_host     = module.cloudsql.private_ip_address
-  database_user     = var.database_user
-  database_password = var.database_password
-  database_name     = var.database_name
-  environment       = var.environment
-
-  depends_on = [module.gke]
+resource "google_compute_global_address" "bindplane_ip" {
+  name         = "${var.cluster_name}-external-ip"
+  address_type = "EXTERNAL"
 }

@@ -7,7 +7,7 @@ variable "namespace" {
 variable "chart_version" {
   description = "Version of the Bindplane Helm chart"
   type        = string
-  default     = "1.26.6" # Latest version from @https://github.com/observIQ/bindplane-op-helm/releases
+  default     = "1.27.0" # Latest version from @https://github.com/observIQ/bindplane-op-helm/releases
 }
 
 variable "admin_username" {
@@ -62,20 +62,50 @@ variable "database_password" {
   sensitive   = true
 }
 
-variable "chart_name" {
-  description = "Name of the Helm chart"
+variable "eventbus_type" {
+  description = "Type of event bus to use. One of 'pubsub' or 'nats'"
   type        = string
-  default     = "bindplane"
+  default     = ""
 }
 
-variable "repository" {
-  description = "Helm chart repository URL"
+variable "pubsub_project_id" {
+  description = "The project ID to host the PubSub topic"
   type        = string
-  default     = "https://observiq.github.io/bindplane-op-helm"
+  default     = ""
 }
 
-variable "secret_name" {
-  description = "Name of the Kubernetes secret for Bindplane configuration"
+variable "pubsub_topic_name" {
+  description = "Name of the PubSub topic to use for the event bus"
   type        = string
-  default     = "bindplane"
+  default     = ""
+}
+
+variable "wif_service_account_email" {
+  description = "Service account email for Workload Identity Federation, required when using PubSub event bus"
+  type        = string
+  default     = ""
+}
+
+variable "database_max_connections" {
+  description = "Maximum number of connections to the database"
+  type        = number
+  default     = 80 // Less than the default Cloudsql limit of 100
+}
+
+variable "bindplane_replicas" {
+  description = "Number of Bindplane replicas, should be 1 unless using a distributed event bus"
+  type        = number
+  default     = 1
+}
+
+variable "transform_agent_replicas" {
+  description = "Number of Transform Agent replicas"
+  type        = number
+  default     = 1
+}
+
+variable "bindplane_resources_cpu_request" {
+  description = "CPU request for Bindplane"
+  type        = string
+  default     = "1000m"
 }

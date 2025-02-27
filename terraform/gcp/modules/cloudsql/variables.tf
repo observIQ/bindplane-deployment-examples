@@ -37,13 +37,12 @@ variable "database_password" {
 variable "instance_tier" {
   description = "The machine type to use"
   type        = string
-  default     = "db-f1-micro"
 }
 
 variable "disk_size_gb" {
   description = "The size of data disk, in GB"
   type        = number
-  default     = 10
+  default     = 250
 }
 
 variable "disk_type" {
@@ -76,24 +75,6 @@ variable "disk_autoresize" {
   default     = true
 }
 
-variable "database_flags" {
-  description = "Database flags for the CloudSQL instance"
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default = [
-    {
-      name  = "max_connections"
-      value = "100"
-    },
-    {
-      name  = "log_min_duration_statement"
-      value = "300"
-    }
-  ]
-}
-
 variable "backup_start_time" {
   description = "Start time for the daily backup (in UTC)"
   type        = string
@@ -110,4 +91,10 @@ variable "point_in_time_recovery_enabled" {
   description = "Whether point-in-time recovery is enabled"
   type        = bool
   default     = true
+}
+
+variable "max_connections" {
+  description = "The maximum number of connections to the database"
+  type        = number
+  default     = 100
 }

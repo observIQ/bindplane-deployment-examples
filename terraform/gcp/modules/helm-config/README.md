@@ -70,8 +70,8 @@ provider "kubernetes" {
 
 | Name            | Description                                 | Type     | Default     | Required |
 | --------------- | ------------------------------------------- | -------- | ----------- | :------: |
-| namespace       | Kubernetes namespace for Bindplane          | string   | "bindplane" |    no    |
-| chart_version   | Version of the Bindplane Helm chart         | string   | "1.26.6"    |    no    |
+| namespace       | Kubernetes namespace for Bindplane          | string   | "binplane" |    no    |
+| chart_version   | Version of the Bindplane Helm chart         | string   | "1.27.0"    |    no    |
 | admin_username  | Admin username for Bindplane                | string   | "admin"     |    no    |
 | admin_password  | Admin password for Bindplane                | string   | -           |   yes    |
 | sessions_secret | Random UUIDv4 for session tokens            | string   | -           |   yes    |

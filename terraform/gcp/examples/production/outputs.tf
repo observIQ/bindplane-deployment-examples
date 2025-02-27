@@ -44,6 +44,21 @@ output "gcloud_command" {
   value       = "gcloud container clusters get-credentials ${module.gke.cluster_name} --region ${var.region} --project ${var.project_id}"
 }
 
+output "bindplane_pubsub_project_id" {
+  description = "The project ID for the Pub/Sub topic used by BindPlane"
+  value       = var.project_id
+}
+
+output "bindplane_pubsub_topic" {
+  description = "The topic ID for the Pub/Sub topic used by BindPlane"
+  value       = module.pubsub.topic_name
+}
+
+output "bindplane_iam_service_account_email" {
+  description = "The email address of the IAM service account used by BindPlane"
+  value       = google_service_account.bindplane.email
+}
+
 // Remote URL is comprised of the IP address used by the ingress resource
 // defined in the readme. Agents will use this endpoint for all communication
 // to Bindplane.
