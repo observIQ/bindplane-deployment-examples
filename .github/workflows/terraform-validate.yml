@@ -1,0 +1,63 @@
+name: Terraform Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform-validate.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "terraform/**"
+      - ".github/workflows/terraform-validate.yml"
+
+jobs:
+  terraform-validate:
+    name: Terraform Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      # Add cache for Terraform plugins
+      - name: Cache Terraform plugins
+        uses: actions/cache@v3
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      - name: Terraform Format
+        run: |
+          cd terraform
+          terraform fmt -check -recursive
+
+      - name: Initialize Terraform
+        run: |
+          cd terraform/gcp/examples/basic
+          terraform init -backend=false
+        env:
+          TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+
+      - name: Validate Terraform
+        run: |
+          cd terraform/gcp/examples/basic
+          terraform validate
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3
+        with:
+          tflint_version: v0.46.1
+
+      - name: Run TFLint
+        run: |
+          cd terraform
+          tflint --recursive --format compact

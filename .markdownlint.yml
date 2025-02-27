@@ -1,0 +1,32 @@
+---
+# Default state for all rules
+default: true
+
+# MD013 - Line length
+MD013:
+  # Number of characters
+  line_length: 120
+  # Allow long tables, code blocks and headings
+  tables: false
+  code_blocks: false
+  headings: false
+
+# MD024 - Multiple headings with the same content
+MD024:
+  # Allow headers with same content but different nesting
+  allow_different_nesting: true
+
+# MD033 - Inline HTML
+MD033:
+  # Allow certain HTML elements
+  allowed_elements: ["br", "img", "a"]
+
+# MD041 - First line should be a top-level heading
+MD041:
+  # First line should be a top-level heading
+  level: 1
+
+# MD046 - Code block style
+MD046:
+  # Code block style (fenced, indented)
+  style: fenced

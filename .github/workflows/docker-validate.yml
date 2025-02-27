@@ -1,0 +1,40 @@
+name: Docker Compose Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docker-compose/**"
+      - ".github/workflows/docker-validate.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docker-compose/**"
+      - ".github/workflows/docker-validate.yml"
+
+jobs:
+  docker-validate:
+    name: Docker Compose Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Docker Compose Validation
+        run: |
+          cd docker-compose
+          docker-compose config -q
+
+      - name: Set up Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: docker-compose/Dockerfile*
+          format: sarif
+          output-file: hadolint.sarif
+
+      - name: Upload Hadolint Results
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: hadolint.sarif
