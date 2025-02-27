@@ -75,7 +75,7 @@ variable "repository" {
 }
 
 variable "secret_name" {
-  description = "Name of the Kubernetes secret for BindPlane configuration"
+  description = "Name of the Kubernetes secret for Bindplane configuration"
   type        = string
   default     = "bindplane"
 }

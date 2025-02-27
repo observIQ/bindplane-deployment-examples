@@ -1,10 +1,10 @@
-# BindPlane Deployment Examples
+# Bindplane Deployment Examples
 
-This repository provides deployment examples for BindPlane, a powerful observability pipeline management platform. It includes multiple deployment options to suit different environments and requirements.
+This repository provides deployment examples for Bindplane, a powerful observability pipeline management platform. It includes multiple deployment options to suit different environments and requirements.
 
 ## Overview
 
-BindPlane can be deployed in various environments, from simple Docker Compose setups for development to production-ready GCP deployments with high availability and security features. This repository contains examples for:
+Bindplane can be deployed in various environments, from simple Docker Compose setups for development to production-ready GCP deployments with high availability and security features. This repository contains examples for:
 
 - Docker Compose deployment for local development and testing
 - Terraform-based GCP deployment for production environments
@@ -16,7 +16,7 @@ Depending on your chosen deployment method, you'll need:
 
 ### For All Deployments
 
-- BindPlane license key (contact [ObservIQ](https://observiq.com/) for a trial)
+- Bindplane license key (contact [Bindplane](https://bindplane.com/) for a trial)
 
 ### For Docker Compose
 
@@ -45,11 +45,11 @@ cd docker-compose
 cp .env.example .env
 # Edit .env with your license key and configuration
 
-# Start BindPlane
+# Start Bindplane
 docker-compose up -d
 ```
 
-Access BindPlane at http://localhost:3001
+Access Bindplane at http://localhost:3001
 
 ### 2. GCP Terraform Deployment (Production)
 
@@ -73,7 +73,7 @@ terraform init
 terraform apply
 ```
 
-After deployment, follow the instructions to access BindPlane through port forwarding or configure an ingress.
+After deployment, follow the instructions to access Bindplane through port forwarding or configure an ingress.
 
 ## Configuration
 
@@ -96,9 +96,9 @@ Key variables in `terraform.tfvars`:
 | `region`            | GCP region for resources  | `us-central1`       |
 | `cluster_name`      | Name for the GKE cluster  | `bindplane-cluster` |
 | `database_password` | Password for the database | (Required)          |
-| `admin_username`    | BindPlane admin username  | `admin`             |
-| `admin_password`    | BindPlane admin password  | (Required)          |
-| `license_key`       | BindPlane license key     | (Required)          |
+| `admin_username`    | Bindplane admin username  | `admin`             |
+| `admin_password`    | Bindplane admin password  | (Required)          |
+| `license_key`       | Bindplane license key     | (Required)          |
 | `machine_type`      | GKE node machine type     | `e2-standard-2`     |
 | `instance_tier`     | CloudSQL instance tier    | `db-f1-micro`       |
 
@@ -172,7 +172,7 @@ The GCP deployment supports:
 
 ### Getting Help
 
-- Check the [BindPlane documentation](https://docs.observiq.com/bindplane)
+- Check the [Bindplane documentation](https://docs.bindplane.com/bindplane)
 - Contact [Bindplane Support](https://bindplane.com/support)
 
 ## Contributing
