@@ -87,10 +87,6 @@ module "cloudsql" {
 
 module "helm_config" {
   source = "../../modules/helm-config"
-  providers = {
-    helm.gke       = helm.gke
-    kubernetes.gke = kubernetes.gke
-  }
 
   namespace         = var.namespace
   admin_username    = var.admin_username
@@ -109,10 +105,6 @@ resource "random_uuid" "bindplane_session" {}
 
 module "k8s_config" {
   source = "../../modules/k8s-config"
-
-  providers = {
-    kubernetes.gke = kubernetes.gke
-  }
 
   namespace         = var.namespace
   database_host     = module.cloudsql.private_ip_address

@@ -2,7 +2,9 @@
 
 ## Overview
 
-This Terraform configuration provides infrastructure for deploying Bindplane on Google Cloud Platform (GCP). It sets up a production-ready environment with a GKE cluster, Cloud SQL PostgreSQL database, and all necessary networking components.
+This Terraform configuration provides infrastructure for deploying Bindplane on Google Cloud Platform (GCP).
+It sets up a production-ready environment with a GKE cluster, Cloud SQL PostgreSQL database,
+and all necessary networking components.
 
 ## Components
 
@@ -226,7 +228,7 @@ This Terraform configuration provides infrastructure for deploying Bindplane on 
 
 Based on docker-compose configuration:
 
-```
+```bash
 BINDPLANE_LICENSE              # Bindplane license key
 BINDPLANE_SESSIONS_SECRET     # Random UUID for session encryption
 BINDPLANE_SECRET_KEY         # Random UUID for API key encryption

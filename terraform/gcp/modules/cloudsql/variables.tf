@@ -40,12 +40,6 @@ variable "instance_tier" {
   default     = "db-f1-micro"
 }
 
-variable "availability_type" {
-  description = "The availability type for the master instance"
-  type        = string
-  default     = "REGIONAL"
-}
-
 variable "disk_size_gb" {
   description = "The size of data disk, in GB"
   type        = number

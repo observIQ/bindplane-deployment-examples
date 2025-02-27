@@ -1,6 +1,7 @@
 # Bindplane Docker Compose Deployment
 
-This directory contains a Docker Compose configuration for running Bindplane locally. This setup is intended for development and testing purposes.
+This directory contains a Docker Compose configuration for running Bindplane locally.
+This setup is intended for development and testing purposes.
 
 ## Components
 
@@ -49,8 +50,8 @@ docker compose ps
 
 ### Accessing Services
 
-- Bindplane UI: http://localhost:3001
-- Prometheus UI: http://localhost:9090
+- Bindplane UI: <http://localhost:3001>
+- Prometheus UI: <http://localhost:9090>
 
 ### Stopping the Services
 

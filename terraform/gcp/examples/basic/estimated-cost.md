@@ -49,4 +49,5 @@ Based on the Terraform configuration, here's an approximate breakdown of the mon
 
 ---
 
-_These estimates are approximate and actual costs may vary based on usage patterns, region, and any special pricing or discounts applied to your GCP account._
+_These estimates are approximate and actual costs may vary based on usage patterns,_
+_region, and any special pricing or discounts applied to your GCP account._

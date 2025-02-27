@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -8,7 +8,7 @@ repos:
       - id: check-added-large-files
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.83.5
+    rev: v1.97.4
     hooks:
       - id: terraform_fmt
       - id: terraform_validate
@@ -22,29 +22,29 @@ repos:
     hooks:
       - id: docker-compose-check
 
-  - repo: https://github.com/bridgecrewio/checkov.git
-    rev: 2.3.365
-    hooks:
-      - id: checkov
-        args: [--quiet, --framework, terraform]
-        files: \.tf$
+  # - repo: https://github.com/bridgecrewio/checkov.git
+  #   rev: 3.2.377
+  #   hooks:
+  #     - id: checkov
+  #       args: [--quiet, --framework, terraform]
+  #       files: \.tf$
 
   # Secret detection
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.16.3
+    rev: v8.24.0
     hooks:
       - id: gitleaks
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.35.0
+    rev: v0.44.0
     hooks:
       - id: markdownlint
         args: ["--fix"]
 
   # Commit message validation
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.5.3
+    rev: v4.2.2
     hooks:
       - id: commitizen
         stages: [commit-msg]

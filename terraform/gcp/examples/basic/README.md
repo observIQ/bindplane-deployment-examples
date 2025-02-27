@@ -54,7 +54,7 @@ gcloud components install gke-gcloud-auth-plugin
 cp terraform.tfvars.example terraform.tfvars
 ```
 
-2. (Optional) Configure the Terraform backend:
+1. (Optional) Configure the Terraform backend:
 
 ```bash
 # Copy the backend configuration example
@@ -64,19 +64,19 @@ cp backend.tf.example backend.tf
 # This enables remote state storage and collaboration
 ```
 
-3. Initialize Terraform:
+1. Initialize Terraform:
 
 ```bash
 terraform init
 ```
 
-4. Review the plan:
+1. Review the plan:
 
 ```bash
 terraform plan -out bindplane.plan
 ```
 
-5. Apply the configuration:
+1. Apply the configuration:
 
 ```bash
 terraform apply bindplane.plan
@@ -141,6 +141,7 @@ kubectl cluster-info
 After the infrastructure is set up, you can proceed with:
 
 1. Accessing the Bindplane UI:
+
    ```bash
    kubectl port-forward svc/bindplane 3001:3001 -n bindplane
    # Visit http://localhost:3001
@@ -148,6 +149,7 @@ After the infrastructure is set up, you can proceed with:
    #   Username: admin
    #   Password: <value of admin_password>
    ```
+
 2. Verify all components are running:
 
    ```bash

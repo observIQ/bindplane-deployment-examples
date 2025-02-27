@@ -21,7 +21,7 @@ locals {
 # Cloud SQL instance
 resource "google_sql_database_instance" "instance" {
   name             = local.instance_name
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_16"
   region           = var.region
   project          = var.project_id
 
@@ -36,7 +36,6 @@ resource "google_sql_database_instance" "instance" {
       ipv4_enabled                                  = false
       private_network                               = var.network_id
       enable_private_path_for_google_cloud_services = true
-      require_ssl                                   = false
     }
 
     backup_configuration {

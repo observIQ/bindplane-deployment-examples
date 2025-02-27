@@ -18,7 +18,6 @@ locals {
 
 # Use data source to reference existing namespace
 data "kubernetes_namespace" "bindplane" {
-  provider = kubernetes.gke
   metadata {
     name = var.namespace
   }
@@ -26,7 +25,6 @@ data "kubernetes_namespace" "bindplane" {
 
 # Use data source to reference existing service account
 data "kubernetes_service_account" "bindplane" {
-  provider = kubernetes.gke
   metadata {
     name      = var.service_account_name
     namespace = var.namespace
@@ -35,7 +33,6 @@ data "kubernetes_service_account" "bindplane" {
 
 # Create database credentials secret
 resource "kubernetes_secret" "db_creds" {
-  provider = kubernetes.gke
   metadata {
     name      = var.secret_name
     namespace = var.namespace
@@ -50,9 +47,8 @@ resource "kubernetes_secret" "db_creds" {
   }
   depends_on = [data.kubernetes_namespace.bindplane]
 }
-resource "kubernetes_manifest" "default_deny_policy" {
-  provider = kubernetes.gke
 
+resource "kubernetes_manifest" "default_deny_policy" {
   manifest = {
     apiVersion = "networking.k8s.io/v1"
     kind       = "NetworkPolicy"
@@ -70,8 +66,6 @@ resource "kubernetes_manifest" "default_deny_policy" {
 }
 
 resource "kubernetes_manifest" "allow_internal_policy" {
-  provider = kubernetes.gke
-
   manifest = {
     apiVersion = "networking.k8s.io/v1"
     kind       = "NetworkPolicy"
@@ -121,8 +115,6 @@ resource "kubernetes_manifest" "allow_internal_policy" {
 }
 
 resource "kubernetes_manifest" "allow_db_policy" {
-  provider = kubernetes.gke
-
   manifest = {
     apiVersion = "networking.k8s.io/v1"
     kind       = "NetworkPolicy"
@@ -153,4 +145,3 @@ resource "kubernetes_manifest" "allow_db_policy" {
 
   depends_on = [data.kubernetes_namespace.bindplane]
 }
-

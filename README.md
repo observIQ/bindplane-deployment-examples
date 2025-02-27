@@ -1,10 +1,13 @@
 # Bindplane Deployment Examples
 
-This repository provides deployment examples for Bindplane, a powerful observability pipeline management platform. It includes multiple deployment options to suit different environments and requirements.
+This repository provides deployment examples for Bindplane, a powerful observability pipeline management platform.
+It includes multiple deployment options to suit different environments and requirements.
 
 ## Overview
 
-Bindplane can be deployed in various environments, from simple Docker Compose setups for development to production-ready GCP deployments with high availability and security features. This repository contains examples for:
+Bindplane can be deployed in various environments, from simple Docker Compose
+setups for development to production-ready GCP deployments with high availability
+and security features. This repository contains examples for:
 
 - Docker Compose deployment for local development and testing
 - Terraform-based GCP deployment for production environments
@@ -49,7 +52,7 @@ cp .env.example .env
 docker-compose up -d
 ```
 
-Access Bindplane at http://localhost:3001
+Access Bindplane at <http://localhost:3001>
 
 ### 2. GCP Terraform Deployment (Production)
 
@@ -178,6 +181,21 @@ The GCP deployment supports:
 ## Contributing
 
 Contributions to these deployment examples are welcome! Please feel free to submit a Pull Request.
+
+## Development Workflow
+
+This project uses pre-commit hooks to ensure code quality and consistency.
+Pre-commit automatically checks your code before each commit to catch
+issues early.
+
+For detailed information about the development workflow, including:
+
+- Setting up pre-commit hooks
+- Available hooks and what they check
+- Coding standards and contribution guidelines
+- Using conventional commits
+
+Please refer to our [contribution guidelines](CONTRIBUTING.md).
 
 ## License
 

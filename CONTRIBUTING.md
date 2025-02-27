@@ -1,6 +1,7 @@
 # Contributing to Bindplane Deployment Examples
 
-Thank you for your interest in contributing to Bindplane Deployment Examples! This document outlines the development setup and contribution guidelines.
+Thank you for your interest in contributing to Bindplane Deployment Examples!
+This document outlines the development setup and contribution guidelines.
 
 ## Development Setup
 
@@ -20,21 +21,50 @@ We use pre-commit hooks to ensure code quality and consistency. To set up pre-co
 1. Install pre-commit:
 
 ```bash
+# Using pip
 pip install pre-commit
+
+# Using Homebrew (macOS)
+brew install pre-commit
 ```
 
-2. Install the git hooks:
+1. Install the git hooks:
 
 ```bash
 pre-commit install --install-hooks
 pre-commit install --hook-type commit-msg  # For commit message validation
 ```
 
-3. To run the hooks manually (without committing):
+1. Install hook dependencies:
 
 ```bash
-pre-commit run --all-files
+# For macOS users, if you need the Checkov hook
+brew install rust  # Required for some hooks
+
+# Install all hook dependencies
+pre-commit install-hooks
 ```
+
+1. To run the hooks manually (without committing):
+
+```bash
+# Run all hooks on all files
+pre-commit run --all-files
+
+# Run a specific hook on all files
+pre-commit run terraform_fmt --all-files
+
+# Run a specific hook on specific files
+pre-commit run terraform_fmt --files terraform/gcp/modules/cloudsql/main.tf
+```
+
+### Troubleshooting Pre-commit
+
+If you encounter issues with specific hooks:
+
+- **Rust-dependent hooks** (like Checkov): Ensure Rust is installed (`brew install rust`)
+- **Terraform validation errors**: Fix the provider configuration issues in the Terraform files
+- **Skip hooks temporarily**: Use `git commit --no-verify` (use sparingly)
 
 ### Pre-commit Hooks Overview
 
@@ -125,7 +155,8 @@ Our GitHub Actions workflows perform the following checks automatically:
 
 ## Using Conventional Commits
 
-We use the Conventional Commits format for commit messages to make the change history more readable and facilitate automatic versioning and changelog generation.
+We use the Conventional Commits format for commit messages to make the change
+history more readable and facilitate automatic versioning and changelog generation.
 
 Format: `<type>(<scope>): <description>`
 

@@ -3,4 +3,4 @@ terraform {
     bucket = "your-terraform-state-bucket"
     prefix = "bindplane/basic"
   }
-} 
+}

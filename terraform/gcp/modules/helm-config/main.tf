@@ -24,7 +24,6 @@ locals {
 }
 
 resource "kubernetes_namespace" "bindplane" {
-  provider = kubernetes.gke
   metadata {
     name = var.namespace
   }
@@ -32,7 +31,6 @@ resource "kubernetes_namespace" "bindplane" {
 
 # Create secret for Bindplane configuration
 resource "kubernetes_secret" "bindplane_config" {
-  provider   = kubernetes.gke
   depends_on = [kubernetes_namespace.bindplane]
 
   metadata {
@@ -51,8 +49,6 @@ resource "kubernetes_secret" "bindplane_config" {
 }
 
 resource "helm_release" "bindplane" {
-  provider = helm.gke
-
   name             = var.chart_name
   repository       = var.repository
   chart            = var.chart_name
