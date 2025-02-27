@@ -30,4 +30,4 @@ variable "services_ip_range" {
   description = "The IP range for GKE services"
   type        = string
   default     = "10.2.0.0/20"
-} 
+}

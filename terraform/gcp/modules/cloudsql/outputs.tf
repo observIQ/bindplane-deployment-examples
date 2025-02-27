@@ -27,4 +27,4 @@ output "self_link" {
 output "database_user" {
   description = "The database user name"
   value       = google_sql_user.user.name
-} 
+}

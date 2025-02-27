@@ -26,4 +26,4 @@ output "pods_ip_range_name" {
 output "services_ip_range_name" {
   description = "The name of the secondary IP range for services"
   value       = google_compute_subnetwork.subnet.secondary_ip_range[1].range_name
-} 
+}

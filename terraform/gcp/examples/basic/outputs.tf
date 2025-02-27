@@ -16,4 +16,4 @@ output "pods_ip_range_name" {
 output "services_ip_range_name" {
   description = "The name of the secondary IP range for services"
   value       = module.networking.services_ip_range_name
-} 
+}
