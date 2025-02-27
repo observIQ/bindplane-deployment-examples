@@ -1,15 +1,15 @@
 locals {
-  namespace      = "bindplane"
-  database_name  = "bindplane"
-  database_user  = "bindplane"
-  admin_username = "admin"
-  environment    = "development"
-  machine_type   = "n2-standard-4"
-  initial_nodes  = 1
-  min_nodes      = 1
-  max_nodes      = 6
-  disk_size_gb   = 500
-  instance_tier  = "db-custom-4-15360"
+  namespace       = "bindplane"
+  database_name   = "bindplane"
+  database_user   = "bindplane"
+  admin_username  = "admin"
+  environment     = "development"
+  machine_type    = "n2-standard-4"
+  initial_nodes   = 1
+  min_nodes       = 1
+  max_nodes       = 6
+  disk_size_gb    = 500
+  instance_tier   = "db-custom-4-15360"
   max_connections = 400
 
   // Five bindplane pods for handling UI, API
@@ -45,7 +45,7 @@ module "networking" {
 }
 
 module "pubsub" {
-  source     = "../../modules/pubsub"
+  source = "../../modules/pubsub"
 
   project_id = var.project_id
   topic_name = var.cluster_name
@@ -142,7 +142,7 @@ resource "google_pubsub_topic_iam_binding" "bindplane_pubsub_topic_permissions" 
 # Add after the GKE module
 module "cloudsql" {
   depends_on = [module.gke]
-  source = "../../modules/cloudsql"
+  source     = "../../modules/cloudsql"
 
   project_id        = var.project_id
   region            = var.region

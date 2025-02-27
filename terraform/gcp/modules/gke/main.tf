@@ -53,10 +53,10 @@ resource "google_container_cluster" "primary" {
 
 # Separately Managed Node Pool
 resource "google_container_node_pool" "primary_nodes" {
-  name       = local.node_pool_name
-  location   = var.region
-  cluster    = google_container_cluster.primary.name
-  project    = var.project_id
+  name               = local.node_pool_name
+  location           = var.region
+  cluster            = google_container_cluster.primary.name
+  project            = var.project_id
   initial_node_count = var.initial_node_count
 
   node_config {

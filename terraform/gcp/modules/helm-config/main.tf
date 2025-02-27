@@ -64,7 +64,7 @@ resource "helm_release" "bindplane" {
         type = var.eventbus_type
         pubsub = {
           projectid = var.pubsub_project_id
-          topic   = var.pubsub_topic_name
+          topic     = var.pubsub_topic_name
         }
       }
 
@@ -72,12 +72,12 @@ resource "helm_release" "bindplane" {
       backend = {
         type = "postgres"
         postgres = {
-          host     = var.database_host
-          port     = 5432
-          database = var.database_name
-          username = var.database_user
-          password = var.database_password
-          sslmode  = "disable"
+          host           = var.database_host
+          port           = 5432
+          database       = var.database_name
+          username       = var.database_user
+          password       = var.database_password
+          sslmode        = "disable"
           maxConnections = var.database_max_connections
         }
       }

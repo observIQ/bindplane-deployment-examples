@@ -70,7 +70,7 @@ resource "google_project_iam_member" "gke_sa_roles" {
 # Add after the GKE module
 module "cloudsql" {
   depends_on = [module.gke]
-  source = "../../modules/cloudsql"
+  source     = "../../modules/cloudsql"
 
   project_id        = var.project_id
   region            = var.region
