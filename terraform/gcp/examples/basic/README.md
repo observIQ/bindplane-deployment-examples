@@ -83,19 +83,35 @@ cp backend.tf.example backend.tf
 # This enables remote state storage and collaboration
 ```
 
-1. Initialize Terraform:
+1. Copy `terraform.tfvars.example` to `terraform.tfvars` and fill in your project details:
+
+```bash
+cp terraform.tfvars.example terraform.tfvars
+```
+
+2. (Optional) Configure the Terraform backend:
+
+```bash
+# Copy the backend configuration example
+cp backend.tf.example backend.tf
+
+# Edit backend.tf and set your GCS bucket name
+# This enables remote state storage and collaboration
+```
+
+3. Initialize Terraform:
 
 ```bash
 terraform init
 ```
 
-1. Review the plan:
+4. Review the plan:
 
 ```bash
 terraform plan -out bindplane.plan
 ```
 
-1. Apply the configuration:
+5. Apply the configuration:
 
 ```bash
 terraform apply bindplane.plan
@@ -113,7 +129,7 @@ terraform apply bindplane.plan
 terraform output -raw gcloud_command | bash
 ```
 
-9. Create namespace and license secret:
+8. Create namespace and license secret:
 
 Set `BINDPLANE_LICENSE` to your Bindplane license key and update
 `your-secure-password` with a secure password. This will be the
@@ -132,7 +148,7 @@ kubectl create secret generic bindplane \
   --from-literal=sessions_secret=$(uuidgen)
 ```
 
-10. Create database secret:
+9. Create database secret:
 
 ```bash
 database_username=$(terraform output -raw database_username)
@@ -144,7 +160,7 @@ kubectl create secret generic bindplane-db \
   --from-literal=password="${database_password}"
 ```
 
-11. Deploy Bindplane:
+10. Deploy Bindplane:
 
 ```bash
 helm upgrade \

@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-=======
-locals {
-  namespace      = "bindplane"
-  database_name  = "bindplane"
-  database_user  = "bindplane"
-  admin_username = "admin"
-  environment    = "development"
-  machine_type   = "e2-standard-2"
-  initial_nodes  = 1
-  min_nodes      = 1
-  max_nodes      = 3
-  instance_tier  = "db-custom-2-7680"
-}
-
->>>>>>> 6e0eea2 (polish cloudsql, move all sensitive values to secrets. generate values file and remove helm module from main)
 module "project_setup" {
   source     = "../../modules/project-setup"
   project_id = var.project_id

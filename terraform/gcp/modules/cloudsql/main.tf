@@ -4,31 +4,13 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.23"
+      version = "~> 4.0"
     }
   }
 }
 
 locals {
   instance_name = "${var.instance_name}-instance"
-<<<<<<< HEAD
-=======
-  database_flags = [
-    {
-      name  = "max_connections"
-      value = var.max_connections
-    },
-    {
-      name  = "idle_in_transaction_session_timeout"
-      value = "180000"
-    },
-  ]
->>>>>>> c654be1 (configurable max connections)
-  backup_config = {
-    enabled                        = var.backup_enabled
-    start_time                     = var.backup_start_time
-    point_in_time_recovery_enabled = var.point_in_time_recovery_enabled
-  }
 }
 
 # Cloud SQL instance
@@ -49,69 +31,26 @@ resource "google_sql_database_instance" "instance" {
     ip_configuration {
       ipv4_enabled                                  = false
       private_network                               = var.network_id
-      enable_private_path_for_google_cloud_services = true
+      enable_private_path_for_google_cloud_services = false
     }
 
     backup_configuration {
-      enabled                        = local.backup_config.enabled
-      start_time                     = local.backup_config.start_time
-      point_in_time_recovery_enabled = local.backup_config.point_in_time_recovery_enabled
+      enabled                        = var.backup_enabled
+      start_time                     = var.backup_start_time
+      point_in_time_recovery_enabled = var.point_in_time_recovery_enabled
       backup_retention_settings {
         retained_backups = var.backup_retention_days
       }
     }
 
-    dynamic "database_flags" {
-      for_each = var.database_flags
-      content {
-        name  = database_flags.value.name
-        value = database_flags.value.value
-      }
+    database_flags {
+      name  = "max_connections"
+      value = var.max_connections
     }
 
     database_flags {
-      name  = "log_checkpoints"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "log_connections"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "log_statement"
-      value = "ddl"
-    }
-
-    database_flags {
-      name  = "cloudsql.enable_pgaudit"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "pgaudit.log"
-      value = "all"
-    }
-
-    database_flags {
-      name  = "log_disconnections"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "log_min_messages"
-      value = "error"
-    }
-
-    database_flags {
-      name  = "log_hostname"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "log_lock_waits"
-      value = "on"
+      name  = "idle_in_transaction_session_timeout"
+      value = "180000"
     }
 
     maintenance_window {

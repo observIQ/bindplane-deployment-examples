@@ -29,6 +29,12 @@ brew install google-cloud-sdk
 # Install kubectl
 brew install kubectl
 
+# Install jq
+brew install jq
+
+# Install Helm
+brew install helm
+
 # Install GKE auth plugin
 gcloud components install gke-gcloud-auth-plugin
 ```
@@ -39,11 +45,24 @@ Tools can be installed using the following documentation:
 
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [Gcloud SDK](https://cloud.google.com/sdk/docs/install#linux)
+- [JQ](https://www.baeldung.com/linux/jq-command-json)
+- [Helm](https://helm.sh/docs/helm/helm_install/)
 
 Once Gcloud SDK is installed, install the GKE auth plugin:
 
 ```bash
 gcloud components install gke-gcloud-auth-plugin
+```
+
+## Helm Setup
+
+Add the Bindplane Helm repository:
+
+```bash
+helm repo add bindplane \
+    https://observiq.github.io/bindplane-op-helm
+
+helm repo update
 ```
 
 ## Usage
@@ -94,7 +113,7 @@ terraform apply bindplane.plan
 terraform output -raw gcloud_command | bash
 ```
 
-9. Create namespace and license secret:
+8. Create namespace and license secret:
 
 Set `BINDPLANE_LICENSE` to your Bindplane license key and update
 `your-secure-password` with a secure password. This will be the
@@ -113,7 +132,7 @@ kubectl create secret generic bindplane \
   --from-literal=sessions_secret=$(uuidgen)
 ```
 
-10. Create database secret:
+9. Create database secret:
 
 ```bash
 database_username=$(terraform output -raw database_username)
@@ -125,7 +144,7 @@ kubectl create secret generic bindplane-db \
   --from-literal=password="${database_password}"
 ```
 
-11. Deploy Bindplane:
+10. Deploy Bindplane:
 
 ```bash
 helm upgrade \
