@@ -9,6 +9,7 @@ database_name=$(terraform output -raw database_name)
 bindplane_pubsub_project_id=$(terraform output -raw bindplane_pubsub_project_id )
 bindplane_pubsub_topic=$(terraform output -raw bindplane_pubsub_topic)
 bindplane_iam_service_account_email=$(terraform output -raw bindplane_iam_service_account_email)
+remote_url=$(terraform output -raw bindplane_remote_url)
 
 if [ -z "${database_host}" ]; then
   echo "database_host is required"
@@ -34,6 +35,12 @@ if [ -z "${bindplane_iam_service_account_email}" ]; then
   echo "bindplane_iam_service_account_email is required"
   exit 1
 fi
+
+if [ -z "${remote_url}" ]; then
+  echo "remote_url is required"
+  exit 1
+fi
+
 
 # heredoc for values.yaml
 cat <<EOF > values.yaml

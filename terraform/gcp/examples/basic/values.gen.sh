@@ -18,6 +18,11 @@ if [ -z "${database_name}" ]; then
   exit 1
 fi
 
+if [ -z "${remote_url}" ]; then
+  echo "remote_url is required"
+  exit 1
+fi
+
 # heredoc for values.yaml
 cat <<EOF > values.yaml
 config:
