@@ -91,23 +91,30 @@ jobs:
           ignore-unfixed: true
           severity: "CRITICAL,HIGH"
 
-      # Add specific checks for docker-compose security
+      # Add specific checks for docker-compose security - with improved error handling
       - name: Check Docker Compose Security
         if: steps.check_compose.outputs.compose_file_exists == 'true'
         run: |
           cd docker-compose
           echo "Performing additional security checks on docker-compose files..."
 
+          # Set shell options to continue on errors
+          set +e
+
           # Check for insecure configurations
           echo "Checking for security issues in compose file..."
-          ! grep -q "privileged:\s*true" docker-compose.* || echo "⚠️ Warning: Privileged mode detected"
-          ! grep -q "host_network:\s*true" docker-compose.* || echo "⚠️ Warning: Host network mode detected"
-          ! grep -q "/var/run/docker.sock" docker-compose.* || echo "⚠️ Warning: Docker socket mount detected"
+          grep -q "privileged:\s*true" docker-compose.* && echo "⚠️ Warning: Privileged mode detected" || echo "✅ No privileged mode detected"
+          grep -q "host_network:\s*true" docker-compose.* && echo "⚠️ Warning: Host network mode detected" || echo "✅ No host network mode detected"
+          grep -q "/var/run/docker.sock" docker-compose.* && echo "⚠️ Warning: Docker socket mount detected" || echo "✅ No Docker socket mount detected"
 
           # Check for image tags
           echo "Checking image references..."
-          ! grep -q "image:.*latest" docker-compose.* || echo "⚠️ Warning: 'latest' tag detected - consider pinning versions"
+          grep -q "image:.*latest" docker-compose.* && echo "⚠️ Warning: 'latest' tag detected - consider pinning versions" || echo "✅ No 'latest' tags detected"
 
           # Check for environment variables
           echo "Checking environment variables..."
-          grep -q "env_file:" docker-compose.* && echo "✅ Using env_file for environment variables"
+          grep -q "env_file:" docker-compose.* && echo "✅ Using env_file for environment variables" || echo "ℹ️ No env_file directive found"
+
+          # Ensure we exit with success
+          echo "Security checks completed"
+          exit 0

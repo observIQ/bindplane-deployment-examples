@@ -1,3 +1,14 @@
+# Add terraform block at the top of the file
+terraform {
+  required_version = ">= 1.0.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0"
+    }
+  }
+}
+
 # Enable required GCP APIs
 resource "google_project_service" "required_apis" {
   for_each = toset([

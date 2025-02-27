@@ -1,8 +1,16 @@
+# Add terraform block at the top
+terraform {
+  required_version = ">= 1.0.0"
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.0.0"
+    }
+  }
+}
+
 # Create namespace for Bindplane
 locals {
-  namespace_labels = {
-    environment = var.environment
-  }
   secret_labels = {
     environment = var.environment
   }

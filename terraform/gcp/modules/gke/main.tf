@@ -1,3 +1,14 @@
+# At the top of the file
+terraform {
+  required_version = ">= 1.0.0"
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.0.0"
+    }
+  }
+}
+
 # Basic GKE cluster configuration
 locals {
   cluster_name   = "${var.cluster_name}-cluster"
