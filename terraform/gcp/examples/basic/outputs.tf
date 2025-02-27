@@ -43,3 +43,11 @@ output "gcloud_command" {
   description = "The command to connect to the database"
   value       = "gcloud container clusters get-credentials ${module.gke.cluster_name} --region ${var.region} --project ${var.project_id}"
 }
+
+// Remote URL is comprised of the IP address used by the ingress resource
+// defined in the readme. Agents will use this endpoint for all communication
+// to Bindplane.
+output "bindplane_remote_url" {
+  description = "The remote URL for BindPlane"
+  value       = "http://${google_compute_global_address.bindplane_ip.address}"
+}

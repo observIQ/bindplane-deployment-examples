@@ -58,3 +58,11 @@ output "bindplane_iam_service_account_email" {
   description = "The email address of the IAM service account used by BindPlane"
   value       = google_service_account.bindplane.email
 }
+
+// Remote URL is comprised of the IP address used by the ingress resource
+// defined in the readme. Agents will use this endpoint for all communication
+// to Bindplane.
+output "bindplane_remote_url" {
+  description = "The remote URL for BindPlane"
+  value       = "http://${google_compute_global_address.bindplane_ip.address}"
+}

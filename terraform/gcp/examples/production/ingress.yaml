@@ -1,4 +1,13 @@
 # ingress.yaml
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: bindplane-backend-config
+  namespace: bindplane
+spec:
+  timeoutSec: 3600
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

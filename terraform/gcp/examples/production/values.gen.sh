@@ -43,6 +43,7 @@ config:
   secret: bindplane
   licenseUseSecret: true
   accept_eula: true
+  server_url: ${remote_url}
 eventbus:
   type: pubsub
   pubsub:
@@ -72,9 +73,12 @@ prometheus:
       memory: 4Gi
     limits:
       memory: 4Gi
-transformAgent:
+transform_agent:
   replicas: 2
 serviceAccount:
   annotations:
     iam.gke.io/gcp-service-account: ${bindplane_iam_service_account_email}
+service:
+  annotations:
+    cloud.google.com/backend-config: '{"default": "bindplane-backend-config"}'
 EOF

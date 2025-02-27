@@ -6,6 +6,7 @@ terraform refresh
 
 database_host=$(terraform output -json database_host | jq -r '.[0].ip_address')
 database_name=$(terraform output -raw database_name)
+remote_url=$(terraform output -raw bindplane_remote_url)
 
 if [ -z "${database_host}" ]; then
   echo "database_host is required"
@@ -23,6 +24,7 @@ config:
   secret: bindplane
   licenseUseSecret: true
   accept_eula: true
+  server_url: ${remote_url}
 backend:
   type: postgres
   postgres:
@@ -47,4 +49,7 @@ prometheus:
       memory: 1Gi
     limits:
       memory: 1Gi
+service:
+  annotations:
+    cloud.google.com/backend-config: '{"default": "bindplane-backend-config"}'
 EOF

@@ -154,13 +154,22 @@ helm upgrade \
   --values values.yaml
 ```
 
-### Ingress (Optional)
+### Ingress
 
 If you want to expose Bindplane to the internet, you can use an Ingress resource.
 Create the file `ingress.yaml` with the following content:
 
 ```bash
 # ingress.yaml
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: bindplane-backend-config
+  namespace: bindplane
+spec:
+  timeoutSec: 3600
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
