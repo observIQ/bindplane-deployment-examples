@@ -21,7 +21,7 @@ locals {
 # Cloud SQL instance
 resource "google_sql_database_instance" "instance" {
   name             = local.instance_name
-  database_version = "POSTGRES_16"
+  database_version = "POSTGRES_17"
   region           = var.region
   project          = var.project_id
 
@@ -53,6 +53,32 @@ resource "google_sql_database_instance" "instance" {
         name  = database_flags.value.name
         value = database_flags.value.value
       }
+    }
+
+    # Security-related database flags
+    database_flags {
+      name  = "log_checkpoints"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_connections"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "log_statement"
+      value = "ddl"
+    }
+
+    database_flags {
+      name  = "cloudsql.enable_pgaudit"
+      value = "on"
+    }
+
+    database_flags {
+      name  = "pgaudit.log"
+      value = "all"
     }
 
     maintenance_window {
