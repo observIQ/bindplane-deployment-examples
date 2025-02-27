@@ -81,3 +81,39 @@ variable "disk_autoresize" {
   type        = bool
   default     = true
 }
+
+variable "database_flags" {
+  description = "Database flags for the CloudSQL instance"
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = [
+    {
+      name  = "max_connections"
+      value = "100"
+    },
+    {
+      name  = "log_min_duration_statement"
+      value = "300"
+    }
+  ]
+}
+
+variable "backup_start_time" {
+  description = "Start time for the daily backup (in UTC)"
+  type        = string
+  default     = "02:00"
+}
+
+variable "backup_enabled" {
+  description = "Whether backups are enabled"
+  type        = bool
+  default     = true
+}
+
+variable "point_in_time_recovery_enabled" {
+  description = "Whether point-in-time recovery is enabled"
+  type        = bool
+  default     = true
+}

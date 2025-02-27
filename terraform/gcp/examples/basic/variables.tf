@@ -48,7 +48,7 @@ variable "database_password" {
 }
 
 variable "environment" {
-  description = "Environment name"
+  description = "Deployment environment (development, staging, production)"
   type        = string
   default     = "development"
 }
@@ -63,4 +63,64 @@ variable "bindplane_license" {
   description = "License key for Bindplane"
   type        = string
   sensitive   = true
+}
+
+variable "namespace" {
+  description = "Kubernetes namespace for the application"
+  type        = string
+  default     = "bindplane"
+}
+
+variable "machine_type" {
+  description = "GKE node machine type"
+  type        = string
+  default     = "e2-standard-2"
+}
+
+variable "initial_nodes" {
+  description = "Initial number of nodes in the GKE cluster"
+  type        = number
+  default     = 1
+}
+
+variable "min_nodes" {
+  description = "Minimum number of nodes in the GKE cluster"
+  type        = number
+  default     = 1
+}
+
+variable "max_nodes" {
+  description = "Maximum number of nodes in the GKE cluster"
+  type        = number
+  default     = 3
+}
+
+variable "disk_size_gb" {
+  description = "Size of the disk in GB"
+  type        = number
+  default     = 10
+}
+
+variable "instance_tier" {
+  description = "The tier for the CloudSQL instance"
+  type        = string
+  default     = "db-f1-micro"
+}
+
+variable "database_name" {
+  description = "Name of the database"
+  type        = string
+  default     = "bindplane"
+}
+
+variable "database_user" {
+  description = "Database username"
+  type        = string
+  default     = "bindplane"
+}
+
+variable "admin_username" {
+  description = "Admin username for the application"
+  type        = string
+  default     = "admin"
 }

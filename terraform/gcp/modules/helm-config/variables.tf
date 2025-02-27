@@ -61,3 +61,21 @@ variable "database_password" {
   type        = string
   sensitive   = true
 }
+
+variable "chart_name" {
+  description = "Name of the Helm chart"
+  type        = string
+  default     = "bindplane"
+}
+
+variable "repository" {
+  description = "Helm chart repository URL"
+  type        = string
+  default     = "https://observiq.github.io/bindplane-op-helm"
+}
+
+variable "secret_name" {
+  description = "Name of the Kubernetes secret for BindPlane configuration"
+  type        = string
+  default     = "bindplane"
+}

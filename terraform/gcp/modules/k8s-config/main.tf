@@ -3,8 +3,6 @@ locals {
   namespace_labels = {
     environment = var.environment
   }
-  service_account_name = "bindplane"
-  secret_name          = "bindplane-db-credentials"
   secret_labels = {
     environment = var.environment
   }
@@ -22,7 +20,7 @@ data "kubernetes_namespace" "bindplane" {
 data "kubernetes_service_account" "bindplane" {
   provider = kubernetes.gke
   metadata {
-    name      = local.service_account_name
+    name      = var.service_account_name
     namespace = var.namespace
   }
 }
@@ -31,7 +29,7 @@ data "kubernetes_service_account" "bindplane" {
 resource "kubernetes_secret" "db_creds" {
   provider = kubernetes.gke
   metadata {
-    name      = local.secret_name
+    name      = var.secret_name
     namespace = var.namespace
     labels    = local.secret_labels
   }

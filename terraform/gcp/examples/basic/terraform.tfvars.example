@@ -1,13 +1,61 @@
-project_id   = "your-project-id"
-region       = "us-central1"
-cluster_name = "bindplane"
+project_id        = "your-gcp-project-id"
+region            = "us-central1"
+cluster_name      = "bindplane"
 
 # Required for Cloud SQL
 database_password = "your-secure-password"
 
 # Required for Bindplane
-admin_password    = "your-secure-admin-password"
+admin_password    = "your-admin-password"
 bindplane_license = "your-bindplane-license-key"
+
+# Optional configuration overrides
+# namespace         = "bindplane"
+# environment       = "development"
+# machine_type      = "e2-standard-2"
+# initial_nodes     = 1
+# min_nodes         = 1
+# max_nodes         = 3
+# disk_size_gb      = 10
+# instance_tier     = "db-f1-micro"
+# database_name     = "bindplane"
+# database_user     = "bindplane"
+# admin_username    = "admin"
+
+# Network configuration
+# network_name      = "bindplane-basic"
+# subnet_ip_range   = "10.0.0.0/20"
+# pods_ip_range     = "10.1.0.0/16"
+# services_ip_range = "10.2.0.0/20"
+
+# CloudSQL configuration
+# database_flags = [
+#   {
+#     name  = "max_connections"
+#     value = "100"
+#   },
+#   {
+#     name  = "log_min_duration_statement"
+#     value = "300"
+#   }
+# ]
+# backup_enabled                 = true
+# backup_start_time             = "02:00"
+# point_in_time_recovery_enabled = true
+# high_availability             = false
+# disk_autoresize               = true
+# backup_retention_days         = 7
+# deletion_protection           = false
+
+# Helm configuration
+# chart_name                    = "bindplane"
+# repository                    = "https://observiq.github.io/bindplane-op-helm"
+# secret_name                   = "bindplane"
+# chart_version                 = "1.26.6"
+
+# Kubernetes configuration
+# service_account_name          = "bindplane"
+# k8s_secret_name               = "bindplane-db-credentials"
 
 # Optional overrides
 # network_name = "bindplane-custom"

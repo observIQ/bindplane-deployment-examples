@@ -1,20 +1,10 @@
 # CloudSQL PostgreSQL instance
 locals {
   instance_name = "${var.instance_name}-instance"
-  database_flags = [
-    {
-      name  = "max_connections"
-      value = "100"
-    },
-    {
-      name  = "log_min_duration_statement"
-      value = "300"
-    }
-  ]
   backup_config = {
-    enabled                        = true
-    start_time                     = "02:00"
-    point_in_time_recovery_enabled = true
+    enabled                        = var.backup_enabled
+    start_time                     = var.backup_start_time
+    point_in_time_recovery_enabled = var.point_in_time_recovery_enabled
   }
 }
 
@@ -49,7 +39,7 @@ resource "google_sql_database_instance" "instance" {
     }
 
     dynamic "database_flags" {
-      for_each = local.database_flags
+      for_each = var.database_flags
       content {
         name  = database_flags.value.name
         value = database_flags.value.value

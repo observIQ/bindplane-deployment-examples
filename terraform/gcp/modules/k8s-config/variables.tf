@@ -31,3 +31,15 @@ variable "database_name" {
   type        = string
   default     = "bindplane"
 }
+
+variable "service_account_name" {
+  description = "Name of the Kubernetes service account"
+  type        = string
+  default     = "bindplane"
+}
+
+variable "secret_name" {
+  description = "Name of the Kubernetes secret for database credentials"
+  type        = string
+  default     = "bindplane-db-credentials"
+}

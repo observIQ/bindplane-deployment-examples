@@ -1,13 +1,10 @@
 # Let Helm create the namespace first
 locals {
-  chart_name  = "bindplane"
-  repository  = "https://observiq.github.io/bindplane-op-helm"
-  secret_name = "bindplane"
   labels = {
     "app.kubernetes.io/managed-by" = "Helm"
   }
   annotations = {
-    "meta.helm.sh/release-name"      = "bindplane"
+    "meta.helm.sh/release-name"      = var.chart_name
     "meta.helm.sh/release-namespace" = var.namespace
   }
 }
@@ -25,7 +22,7 @@ resource "kubernetes_secret" "bindplane_config" {
   depends_on = [kubernetes_namespace.bindplane]
 
   metadata {
-    name        = local.secret_name
+    name        = var.secret_name
     namespace   = var.namespace
     labels      = local.labels
     annotations = local.annotations
@@ -42,9 +39,9 @@ resource "kubernetes_secret" "bindplane_config" {
 resource "helm_release" "bindplane" {
   provider = helm.gke
 
-  name             = local.chart_name
-  repository       = local.repository
-  chart            = local.chart_name
+  name             = var.chart_name
+  repository       = var.repository
+  chart            = var.chart_name
   version          = var.chart_version
   namespace        = var.namespace
   create_namespace = true
@@ -67,7 +64,7 @@ resource "helm_release" "bindplane" {
 
       # Use our created secret
       config = {
-        secret           = local.secret_name
+        secret           = var.secret_name
         licenseUseSecret = true
         accept_eula      = true
       }
