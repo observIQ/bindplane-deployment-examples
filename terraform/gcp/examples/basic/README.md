@@ -2,6 +2,23 @@
 
 This example demonstrates a basic deployment of Bindplane infrastructure on GCP.
 
+## Deployment Summary
+
+This example deploys a basic Bindplane environment through the following operations:
+
+1. Infrastructure Deployment (Terraform):
+   - **Networking**: VPC network, subnets, Cloud NAT, private service access
+   - **GKE Cluster**: Private cluster with autoscaling node pool
+   - **Cloud SQL**: Private PostgreSQL instance for state storage
+   - **IAM & Security**: Service account for GKE nodes
+   - **Load Balancing**: Global IP address for ingress
+
+2. Application Deployment (Kubernetes/Helm):
+   - **Bindplane Server**: Single instance deployment
+   - **Transform Agent**: Single instance for data processing
+   - **Prometheus**: Single instance for agent throughput measurements
+   - **Secrets Management**: Database credentials and license management
+
 ## Prerequisites
 
 1. A GCP project with billing enabled

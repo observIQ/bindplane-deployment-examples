@@ -1,6 +1,28 @@
 # Production Bindplane Deployment Example
 
-This example demonstrates a basic deployment of Bindplane infrastructure on GCP.
+This example demonstrates a production deployment of Bindplane infrastructure on GCP.
+
+## Deployment Summary
+
+This example deploys a production-ready Bindplane environment through the following operations:
+
+1. Infrastructure Deployment (Terraform):
+   - **Networking**: VPC network, subnets, Cloud NAT, private service access
+   - **GKE Cluster**: Private cluster with autoscaling node pool (n2-standard-4)
+   - **Cloud SQL**: Private PostgreSQL instance with automated backups
+   - **Pub/Sub**: Topic for Bindplane event bus
+   - **IAM & Security**: Service accounts for GKE nodes and Bindplane workloads
+   - **Load Balancing**: Global IP address for ingress
+
+2. Application Deployment (Kubernetes/Helm):
+   - **Bindplane Server**: 5 replicas for high availability
+   - **Transform Agent**: 2 replicas for data processing
+   - **Prometheus**: Single instance for agent throughput measurements
+   - **Secrets Management**: Database credentials and license management
+
+The deployment is configured for high availability with:
+- Multiple Bindplane server replicas
+- Autoscaling GKE node pool
 
 ## Prerequisites
 
