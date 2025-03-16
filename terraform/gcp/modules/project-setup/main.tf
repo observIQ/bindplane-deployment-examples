@@ -18,6 +18,8 @@ resource "google_project_service" "required_apis" {
     "cloudresourcemanager.googleapis.com", # Cloud Resource Manager API
     "containerregistry.googleapis.com",    # Container Registry API
     "sqladmin.googleapis.com",             # Cloud SQL Admin API
+    "pubsub.googleapis.com",               # Cloud Pub/Sub API
+    "serviceusage.googleapis.com",         # Service Usage API
   ])
 
   project = var.project_id
