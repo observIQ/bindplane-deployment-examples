@@ -1,4 +1,4 @@
-# Basic Bindplane Deployment Example
+# Production Bindplane Deployment Example
 
 This example demonstrates a basic deployment of Bindplane infrastructure on GCP.
 
