@@ -52,13 +52,13 @@ variable "initial_node_count" {
 }
 
 variable "min_node_count" {
-  description = "Minimum number of nodes in the NodePool"
+  description = "Minimum number of nodes in the NodePool per zone"
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "max_node_count" {
-  description = "Maximum number of nodes in the NodePool"
+  description = "Maximum number of nodes in the NodePool per zone"
   type        = number
   default     = 5
 }

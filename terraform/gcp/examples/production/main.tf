@@ -11,13 +11,6 @@ locals {
   disk_size_gb    = 500
   instance_tier   = "db-custom-4-15360"
   max_connections = 400
-
-  // Five bindplane pods for handling UI, API
-  // and OpAMP workloads. A single jobs pods
-  // will deployed for a total of 6 pods.
-  bindplane_replicas = 5
-
-  transform_agent_replicas = 2
 }
 
 module "project_setup" {

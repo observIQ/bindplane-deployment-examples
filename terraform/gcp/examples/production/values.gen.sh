@@ -44,7 +44,7 @@ fi
 
 # heredoc for values.yaml
 cat <<EOF > values.yaml
-replicas: 5
+replicas: 3
 
 config:
   secret: bindplane
