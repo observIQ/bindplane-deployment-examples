@@ -2,6 +2,23 @@
 
 This example demonstrates a basic deployment of Bindplane infrastructure on GCP.
 
+## Deployment Summary
+
+This example deploys a basic Bindplane environment through the following operations:
+
+1. Infrastructure Deployment (Terraform):
+   - **Networking**: VPC network, subnets, Cloud NAT, private service access
+   - **GKE Cluster**: Private cluster with autoscaling node pool
+   - **Cloud SQL**: Private PostgreSQL instance for state storage
+   - **IAM & Security**: Service account for GKE nodes
+   - **Load Balancing**: Global IP address for ingress
+
+2. Application Deployment (Kubernetes/Helm):
+   - **Bindplane Server**: Single instance deployment
+   - **Transform Agent**: Single instance for data processing
+   - **Prometheus**: Single instance for agent throughput measurements
+   - **Secrets Management**: Database credentials and license management
+
 ## Prerequisites
 
 1. A GCP project with billing enabled
@@ -17,6 +34,27 @@ This example demonstrates a basic deployment of Bindplane infrastructure on GCP.
    - gcloud CLI
    - kubectl
    - google-cloud-sdk-gke-gcloud-auth-plugin
+
+## Required GCP Permissions
+
+The account used to apply this Terraform configuration needs the following IAM roles:
+
+Project Level Roles:
+  - `roles/compute.admin` - For managing compute resources, networks, and load balancers
+  - `roles/container.admin` - For creating and managing GKE clusters
+  - `roles/iam.serviceAccountAdmin` - For creating and managing service accounts
+  - `roles/iam.serviceAccountUser` - For managing service account impersonation
+  - `roles/cloudsql.admin` - For creating and managing Cloud SQL instances
+  - `roles/servicenetworking.networksAdmin` - For configuring private service access
+  - `roles/resourcemanager.projectIamAdmin` - For managing IAM policies
+  - `roles/serviceusage.serviceUsageAdmin` - For enabling required APIs
+
+Terraform will create an IAM Service Account with the following permissions:
+   - GKE Node Service Account:
+     - `roles/logging.logWriter`
+     - `roles/monitoring.metricWriter`
+     - `roles/monitoring.viewer`
+     - `roles/stackdriver.resourceMetadata.writer`
 
 ## Tool Installation
 

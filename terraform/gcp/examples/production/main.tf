@@ -52,7 +52,10 @@ module "pubsub" {
 }
 
 module "gke" {
-  depends_on = [module.networking]
+  depends_on = [
+    module.project_setup,
+    module.networking
+  ]
   source     = "../../modules/gke"
 
   project_id             = var.project_id
