@@ -85,27 +85,3 @@ variable "wif_service_account_email" {
   type        = string
   default     = ""
 }
-
-variable "database_max_connections" {
-  description = "Maximum number of connections to the database"
-  type        = number
-  default     = 80 // Less than the default Cloudsql limit of 100
-}
-
-variable "bindplane_replicas" {
-  description = "Number of Bindplane replicas, should be 1 unless using a distributed event bus"
-  type        = number
-  default     = 1
-}
-
-variable "transform_agent_replicas" {
-  description = "Number of Transform Agent replicas"
-  type        = number
-  default     = 1
-}
-
-variable "bindplane_resources_cpu_request" {
-  description = "CPU request for Bindplane"
-  type        = string
-  default     = "1000m"
-}
