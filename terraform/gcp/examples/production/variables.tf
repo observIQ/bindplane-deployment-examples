@@ -62,5 +62,4 @@ variable "admin_password" {
 variable "bindplane_license" {
   description = "License key for Bindplane"
   type        = string
-  sensitive   = true
 }

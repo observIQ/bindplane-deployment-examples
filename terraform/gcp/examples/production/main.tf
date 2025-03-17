@@ -38,6 +38,7 @@ module "networking" {
 }
 
 module "pubsub" {
+  depends_on = [module.project_setup]
   source = "../../modules/pubsub"
 
   project_id = var.project_id
@@ -73,6 +74,7 @@ module "gke" {
 
 # Create service account for GKE nodes
 resource "google_service_account" "gke_sa" {
+  depends_on = [module.project_setup]
   account_id   = "${var.cluster_name}-sa"
   display_name = "GKE Service Account"
   project      = var.project_id
@@ -80,6 +82,7 @@ resource "google_service_account" "gke_sa" {
 
 # Add after service account creation
 resource "google_project_iam_member" "gke_sa_roles" {
+  depends_on = [module.project_setup]
   for_each = toset([
     "roles/logging.logWriter",
     "roles/monitoring.metricWriter",
@@ -94,6 +97,7 @@ resource "google_project_iam_member" "gke_sa_roles" {
 
 # Create service account for Bindplane Workload Identity Federation
 resource "google_service_account" "bindplane" {
+  depends_on = [module.project_setup]
   account_id   = "${var.cluster_name}-bindplane-sa"
   display_name = "Bindplane Service Account"
   project      = var.project_id
@@ -102,6 +106,7 @@ resource "google_service_account" "bindplane" {
 
 # IAM Policy Binding: Allow Kubernetes service account to impersonate the GCP service account
 resource "google_service_account_iam_binding" "bindplane_workload_identity" {
+  depends_on = [module.project_setup, module.gke]
   service_account_id = google_service_account.bindplane.name
   role               = "roles/iam.workloadIdentityUser"
 
@@ -112,6 +117,7 @@ resource "google_service_account_iam_binding" "bindplane_workload_identity" {
 
 # Grant Pub/Sub permissions to the service account
 resource "google_project_iam_member" "bindplane_pubsub_permissions" {
+  depends_on = [module.project_setup]
   for_each = toset([
     // TODO(jsirianni): This is invasive, because Bindplane attempts to create a topic
     // on startup while checking if it exists. We can optimize this check to avoid this
@@ -127,6 +133,7 @@ resource "google_project_iam_member" "bindplane_pubsub_permissions" {
 // Grant permission to subscribe and publish the topic. This is scoped
 // to the topic itself, not the project.
 resource "google_pubsub_topic_iam_binding" "bindplane_pubsub_topic_permissions" {
+  depends_on = [module.project_setup]
   topic = module.pubsub.topic_name
   role  = "roles/pubsub.publisher"
 
@@ -137,7 +144,7 @@ resource "google_pubsub_topic_iam_binding" "bindplane_pubsub_topic_permissions" 
 
 # Add after the GKE module
 module "cloudsql" {
-  depends_on = [module.gke]
+  depends_on = [module.gke, module.project_setup]
   source     = "../../modules/cloudsql"
 
   project_id        = var.project_id
@@ -158,6 +165,7 @@ module "cloudsql" {
 resource "random_uuid" "bindplane_session" {}
 
 resource "google_compute_global_address" "bindplane_ip" {
+  depends_on = [module.project_setup]
   name         = "${var.cluster_name}-external-ip"
   address_type = "EXTERNAL"
 }
