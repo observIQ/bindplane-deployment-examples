@@ -174,7 +174,7 @@ Set `BINDPLANE_LICENSE` to your Bindplane license key and update
 password for the Bindplane admin user.
 
 ```bash
-BINDPLANE_LICENSE="your-license-key"
+BINDPLANE_LICENSE="$(terraform output -raw bindplane_license)"
 
 kubectl create namespace bindplane
 

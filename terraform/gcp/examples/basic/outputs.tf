@@ -51,3 +51,8 @@ output "bindplane_remote_url" {
   description = "The remote URL for BindPlane"
   value       = "http://${google_compute_global_address.bindplane_ip.address}"
 }
+
+output "bindplane_license" {
+  description = "The license key for BindPlane"
+  value       = var.bindplane_license
+}
