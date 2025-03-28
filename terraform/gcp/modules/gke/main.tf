@@ -49,6 +49,12 @@ resource "google_container_cluster" "primary" {
   workload_identity_config {
     workload_pool = local.workload_pool
   }
+
+  node_config {
+    workload_metadata_config {
+      mode = "GKE_METADATA"
+    }
+  }
 }
 
 # Separately Managed Node Pool
