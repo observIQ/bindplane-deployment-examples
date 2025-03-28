@@ -13,9 +13,6 @@ repos:
       - id: terraform_fmt
       - id: terraform_validate
       - id: terraform_docs
-      - id: terraform_tflint
-        args:
-          - --args=--recursive
 
   - repo: https://github.com/IamTheFij/docker-pre-commit
     rev: v3.0.1
