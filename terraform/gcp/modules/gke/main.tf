@@ -55,6 +55,12 @@ resource "google_container_cluster" "primary" {
       mode = "GKE_METADATA"
     }
   }
+
+  release_channel {
+    channel = "REGULAR"
+  }
+
+  enable_intranode_visibility = true
 }
 
 # Separately Managed Node Pool
