@@ -11,7 +11,6 @@ This document outlines the development setup and contribution guidelines.
 - Python 3.7+ (for pre-commit)
 - Terraform 1.5.7+
 - Docker and Docker Compose
-- [TFLint](https://github.com/terraform-linters/tflint) for Terraform linting
 - [pre-commit](https://pre-commit.com/) for git hooks
 
 ### Setting Up Pre-commit Hooks
@@ -84,7 +83,6 @@ The following checks are performed on each commit:
   - Format Terraform files (`terraform fmt`)
   - Validate Terraform configurations (`terraform validate`)
   - Update Terraform documentation
-  - Lint Terraform files with TFLint
 
 - **Docker**:
 
@@ -135,7 +133,6 @@ Our GitHub Actions workflows perform the following checks automatically:
 
   - Format verification
   - Configuration validation
-  - TFLint checks
   - Plugin caching for faster runs
 
 - **Security Scanning**:

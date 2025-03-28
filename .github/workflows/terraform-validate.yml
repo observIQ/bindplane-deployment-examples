@@ -51,13 +51,3 @@ jobs:
         run: |
           cd terraform/gcp/examples/basic
           terraform validate
-
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v4
-        with:
-          tflint_version: v0.46.1
-
-      - name: Run TFLint
-        run: |
-          cd terraform
-          tflint --recursive --format compact

@@ -62,6 +62,7 @@ backend:
     host: ${database_host}
     port: 5432
     database: ${database_name}
+    sslmode: require
     credentialSecret:
       name: bindplane-db
       usernameKey: username
