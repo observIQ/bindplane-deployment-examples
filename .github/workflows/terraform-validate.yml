@@ -60,4 +60,6 @@ jobs:
       - name: Run TFLint
         run: |
           cd terraform
-          tflint --recursive --format compact --loglevel error
+          tflint --recursive --format compact
+        env:
+          TFLINT_LOG: error
