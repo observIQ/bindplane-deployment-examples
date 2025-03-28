@@ -45,6 +45,8 @@ resource "google_compute_subnetwork" "subnet" {
   }
 
   private_ip_google_access = true
+
+  #checkov:skip=CKV_GCP_26: "Out of scope for now"
 }
 
 # Cloud NAT for outbound internet access

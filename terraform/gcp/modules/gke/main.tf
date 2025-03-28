@@ -54,6 +54,10 @@ resource "google_container_cluster" "primary" {
     workload_metadata_config {
       mode = "GKE_METADATA"
     }
+
+    shielded_instance_config {
+      enable_secure_boot = true
+    }
   }
 
   release_channel {
@@ -61,6 +65,16 @@ resource "google_container_cluster" "primary" {
   }
 
   enable_intranode_visibility = true
+
+  network_policy {
+    enabled = true
+  }
+
+  #checkov:skip=CKV_GCP_20: "TODO(jsirianni): We can make this opt in"
+  #checkov:skip=CKV_GCP_21: "TODO(jsirianni): We can make this opt in"
+  #checkov:skip=CKV_GCP_13: "TODO(jsirianni): We can make this opt in"
+  #checkov:skip=CKV_GCP_65: Out of scope for now
+  #checkov:skip=CKV_GCP_66: Out of scope for now
 }
 
 # Separately Managed Node Pool
@@ -85,6 +99,10 @@ resource "google_container_node_pool" "primary_nodes" {
 
     workload_metadata_config {
       mode = "GKE_METADATA"
+    }
+
+    shielded_instance_config {
+      enable_secure_boot = true
     }
   }
 

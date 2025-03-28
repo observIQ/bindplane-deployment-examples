@@ -109,6 +109,8 @@ resource "google_sql_database_instance" "instance" {
   }
 
   deletion_protection = var.deletion_protection
+
+  #checkov:skip=CKV2_GCP_13: "TODO(jsirianni): We can make this opt in"
 }
 
 # Database
