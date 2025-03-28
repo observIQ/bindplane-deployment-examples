@@ -57,7 +57,7 @@ resource "google_container_cluster" "primary" {
 
     shielded_instance_config {
       enable_integrity_monitoring = true
-      enable_secure_boot = true
+      enable_secure_boot          = true
     }
   }
 
@@ -104,7 +104,7 @@ resource "google_container_node_pool" "primary_nodes" {
 
     shielded_instance_config {
       enable_integrity_monitoring = true
-      enable_secure_boot = true
+      enable_secure_boot          = true
     }
   }
 

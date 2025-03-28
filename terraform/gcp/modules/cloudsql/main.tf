@@ -35,7 +35,7 @@ resource "google_sql_database_instance" "instance" {
 
       # TODO(jsirianni): Support mtls
       #checkov:skip=CKV_GCP_6: "Server side tls is fine for now"
-      ssl_mode                                      = "ENCRYPTED_ONLY"
+      ssl_mode = "ENCRYPTED_ONLY"
     }
 
     backup_configuration {
