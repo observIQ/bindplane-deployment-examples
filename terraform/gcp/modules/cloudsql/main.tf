@@ -32,9 +32,6 @@ resource "google_sql_database_instance" "instance" {
       ipv4_enabled                                  = false
       private_network                               = var.network_id
       enable_private_path_for_google_cloud_services = false
-
-      # TODO(jsirianni): Support mtls
-      #checkov:skip=CKV_GCP_6: "Server side tls is fine for now"
       ssl_mode = "ENCRYPTED_ONLY"
     }
 
@@ -112,9 +109,6 @@ resource "google_sql_database_instance" "instance" {
   }
 
   deletion_protection = var.deletion_protection
-
-  #checkov:skip=CKV2_GCP_13: "TODO(jsirianni): We can make this opt in"
-  #checkov:skip=CKV_GCP_109: "Out of scope for now"
 }
 
 # Database

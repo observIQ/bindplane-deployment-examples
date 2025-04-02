@@ -19,13 +19,6 @@ repos:
     hooks:
       - id: docker-compose-check
 
-  # - repo: https://github.com/bridgecrewio/checkov.git
-  #   rev: 3.2.377
-  #   hooks:
-  #     - id: checkov
-  #       args: [--quiet, --framework, terraform]
-  #       files: \.tf$
-
   # Secret detection
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.0

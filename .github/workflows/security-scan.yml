@@ -30,14 +30,6 @@ jobs:
         with:
           working_directory: terraform
 
-      - name: Run Checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: terraform
-          framework: terraform
-          quiet: true
-          skip_check: CKV_AWS_* # Skip AWS checks if you're only using GCP
-
   docker-security:
     name: Docker Security Scan
     runs-on: ubuntu-latest

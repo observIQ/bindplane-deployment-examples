@@ -37,9 +37,6 @@ pre-commit install --hook-type commit-msg  # For commit message validation
 1. Install hook dependencies:
 
 ```bash
-# For macOS users, if you need the Checkov hook
-brew install rust  # Required for some hooks
-
 # Install all hook dependencies
 pre-commit install-hooks
 ```
@@ -61,7 +58,6 @@ pre-commit run terraform_fmt --files terraform/gcp/modules/cloudsql/main.tf
 
 If you encounter issues with specific hooks:
 
-- **Rust-dependent hooks** (like Checkov): Ensure Rust is installed (`brew install rust`)
 - **Terraform validation errors**: Fix the provider configuration issues in the Terraform files
 - **Skip hooks temporarily**: Use `git commit --no-verify` (use sparingly)
 
@@ -90,7 +86,6 @@ The following checks are performed on each commit:
 
 - **Security**:
 
-  - Scan Terraform files with Checkov
   - Detect secrets and sensitive information with Gitleaks
 
 - **Commit Messages**:
@@ -137,7 +132,6 @@ Our GitHub Actions workflows perform the following checks automatically:
 
 - **Security Scanning**:
 
-  - Terraform security scanning with TFSec and Checkov
   - Docker Compose validation
   - Docker configuration scanning with Trivy
 

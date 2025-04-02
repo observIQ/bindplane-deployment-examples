@@ -70,12 +70,6 @@ resource "google_container_cluster" "primary" {
   network_policy {
     enabled = true
   }
-
-  #checkov:skip=CKV_GCP_20: "TODO(jsirianni): We can make this opt in"
-  #checkov:skip=CKV_GCP_21: "TODO(jsirianni): We can make this opt in"
-  #checkov:skip=CKV_GCP_13: "TODO(jsirianni): We can make this opt in"
-  #checkov:skip=CKV_GCP_65: Out of scope for now
-  #checkov:skip=CKV_GCP_66: Out of scope for now
 }
 
 # Separately Managed Node Pool
