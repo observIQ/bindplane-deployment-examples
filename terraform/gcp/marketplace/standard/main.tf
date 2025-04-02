@@ -177,4 +177,14 @@ variable "boot_disk_type" {
   description = "The type of the boot disk."
 }
 
+output "endpoint" {
+  description = "The external IP address of the instance formatted as a URL."
+  value       = "http://${google_compute_address.vm_ip.address}:3001"
+}
+
+output "ssh_command" {
+  description = "The gcloud command to SSH into the instance."
+  value       = "gcloud compute ssh ${var.goog_cm_deployment_name}-vm --zone ${var.zone} --project ${var.project_id}"
+}
+
 

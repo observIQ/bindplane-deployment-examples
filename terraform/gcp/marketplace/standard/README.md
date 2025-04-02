@@ -1,6 +1,7 @@
 # Terraform Configuration for Google Compute Instance
 
-This directory contains a Terraform configuration for deploying a Google Compute Engine instance.
+This directory contains a Terraform configuration for deploying a Google Compute Engine instance. While it
+can be deployed manually, it is primarily intended for use with the [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/bluemedora/bindplane-enterprise-edition).
 
 ## Prerequisites
 
@@ -9,7 +10,6 @@ This directory contains a Terraform configuration for deploying a Google Compute
 - [Terraform](https://www.terraform.io/downloads.html) installed on your local machine.
 - Google Cloud SDK installed and authenticated.
 - A Google Cloud project with billing enabled.
-- Packer build completed as described in the [Google Marketplace README](../README.md).
 
 ### Required GCP IAM Roles
 
@@ -32,25 +32,40 @@ Ensure that the user deploying the Terraform configuration has these roles assig
 
    ```bash
    terraform plan \
-     -var="project=your-gcp-project-id" \
-     -var="deployment=your-deployment-name" \
-     -var="network=default" \
-     -var="subnetwork=default" \
-     -var="image=bindplane-ee-<commit>"
+     -var="project_id=your-gcp-project-id" \
+     -var="goog_cm_deployment_name=your-deployment-name"
    ```
 
 3. Apply the configuration to create the resources:
 
    ```bash
    terraform apply \
-     -var="project=your-gcp-project-id" \
-     -var="deployment=your-deployment-name" \
-     -var="network=default" \
-     -var="subnetwork=default" \
-     -var="image=bindplane-ee-<commit>"
+     -var="project_id=your-gcp-project-id" \
+     -var="goog_cm_deployment_name=your-deployment-name"
    ```
 
 Replace the variable values with your specific configuration.
+
+## Post-Deployment Steps
+
+1. **Access the System**: Use the `ssh_command` output to SSH into the instance.
+
+2. **Initialize License**: If you did not provide a license, run the following command:
+
+   ```bash
+   sudo BINDPLANE_CONFIG_HOME=/var/lib/bindplane /usr/local/bin/bindplane init license --config /etc/bindplane/config.yaml
+   ```
+
+   The init command will prompt you to restart the server. Choose 'yes'.
+
+3. **Start the Service**: If you skipped the license initialization because a license was already configured, start the service manually:
+
+   ```bash
+   sudo systemctl enable bindplane
+   sudo systemctl restart bindplane
+   ```
+
+4. **Inspect Config File**: Check the config file at `/etc/bindplane/config.yaml` for your password under `auth.password`. Use the username "admin" and your password to access the endpoint provided in the `endpoint` Terraform output.
 
 ## Using as a Module
 
@@ -62,12 +77,8 @@ This Terraform configuration can be used as a module in other Terraform configur
    module "compute_instance" {
      source = "./google_compute_instance_module"
 
-     project           = "your-gcp-project-id"
-     deployment        = "your-deployment-name"
-     network           = "default"
-     subnetwork        = "default"
-     image             = "your-image"
-     license           = "your-license"
+     project_id           = "your-gcp-project-id"
+     goog_cm_deployment_name = "your-deployment-name"
      # Add other variables as needed
    }
    ```
@@ -80,13 +91,20 @@ This Terraform configuration can be used as a module in other Terraform configur
 
 | Variable           | Description                                      | Default       |
 |--------------------|--------------------------------------------------|---------------|
-| `project`          | The ID of your Google Cloud project.            | required      |
-| `region`           | The region where the resources will be deployed.| `us-east1`    |
-| `deployment`       | The name of the deployment.                     | required      |
-| `zone`             | The zone where the instance will be created.    | `us-east1-b`  |
-| `machine_type`     | The machine type for the instance.              | `n2-standard-2`|
-| `network`          | The network to which the instance will be connected.| required  |
-| `subnetwork`       | The subnetwork to which the instance will be connected.| required|
-| `image`            | The image to use for the boot disk.             | required      |
-| `boot_disk_size_gb`| The size of the boot disk in gigabytes.         | `120`         |
-| `boot_disk_type`   | The type of the boot disk.                      | `pd-ssd`      |
+| `project_id`       | The ID of your Google Cloud project.             | required      |
+| `goog_cm_deployment_name` | The name of the deployment.               | `bindplane`   |
+| `region`           | The region where the resources will be deployed. | `us-east1`    |
+| `zone`             | The zone where the instance will be created.     | `us-east1-b`  |
+| `machine_type`     | The machine type for the instance.               | `n2-standard-2`|
+| `network`          | The network to which the instance will be connected.| `default`  |
+| `image`            | The image to use for the boot disk.              | `projects/blue-medoras-public-project/global/images/bindplane-ee-82656db3` |
+| `boot_disk_size_gb`| The size of the boot disk in gigabytes.          | `120`         |
+| `boot_disk_type`   | The type of the boot disk.                       | `pd-ssd`      |
+| `license`          | The license key for the BindPlane software.      | optional         |
+
+## Outputs
+
+After applying the configuration, the following outputs will be available:
+
+- **endpoint**: The external IP address of the instance formatted as a URL. You can access the application at this URL.
+- **ssh_command**: The `gcloud` command to SSH into the instance. Use this command to connect to your instance via SSH.
