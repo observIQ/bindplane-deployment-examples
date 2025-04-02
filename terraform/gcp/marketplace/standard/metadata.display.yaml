@@ -1,0 +1,48 @@
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: bindplane-deployment-examples-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Terraform Configuration for Google Compute Instance
+    source:
+      repo: https://github.com/observIQ/bindplane-deployment-examples.git
+      sourceType: git
+      dir: /terraform/gcp/marketplace/standard
+  ui:
+    input:
+      variables:
+        boot_disk_size_gb:
+          name: boot_disk_size_gb
+          title: Boot Disk Size Gb
+        boot_disk_type:
+          name: boot_disk_type
+          title: Boot Disk Type
+        goog_cm_deployment_name:
+          name: goog_cm_deployment_name
+          title: Goog Cm Deployment Name
+        image:
+          name: image
+          title: Image
+          xGoogleProperty:
+            type: ET_GCE_DISK_IMAGE
+        license:
+          name: license
+          title: License
+        machine_type:
+          name: machine_type
+          title: Machine Type
+        network:
+          name: network
+          title: Network
+        project_id:
+          name: project_id
+          title: Project Id
+        region:
+          name: region
+          title: Region
+        zone:
+          name: zone
+          title: Zone
