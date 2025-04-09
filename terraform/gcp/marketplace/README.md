@@ -8,7 +8,7 @@
 
 ### Metadata Generation
 
-The `metadata.yaml` and `metadata.display.yaml` files were generated using the Google CFT CLI. This tool helps in managing and deploying configurations on Google Cloud Platform.
+The `metadata.yaml` and `metadata.display.yaml` files were generated using the Google CFT CLI.
 
 Example: 
 
@@ -18,4 +18,4 @@ cft blueprint metadata -p ./ -q -d --nested=false
 
 ### Packer Compute Images
 
-The Packer compute images are built and published as part of the Bindplane release process. These images are used to ensure consistency and reliability across deployments.
+The Packer compute images are built and published as part of the Bindplane release process.
