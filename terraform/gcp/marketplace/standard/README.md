@@ -97,7 +97,7 @@ This Terraform configuration can be used as a module in other Terraform configur
 | `zone`             | The zone where the instance will be created.     | `us-east1-b`  |
 | `machine_type`     | The machine type for the instance.               | `n2-standard-2`|
 | `network`          | The network to which the instance will be connected.| `default`  |
-| `image`            | The image to use for the boot disk.              | `projects/blue-medoras-public-project/global/images/bindplane-ee-82656db3` |
+| `image`            | The image to use for the boot disk.              | `projects/blue-medoras-public-project/global/images/bindplane-ee-1-88-4` |
 | `boot_disk_size_gb`| The size of the boot disk in gigabytes.          | `120`         |
 | `boot_disk_type`   | The type of the boot disk.                       | `pd-ssd`      |
 | `license`          | The license key for the BindPlane software.      | optional         |

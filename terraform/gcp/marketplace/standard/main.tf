@@ -131,7 +131,7 @@ variable "image" {
   type = string
   // TODO(jsirianni): Understand why a default is needed here
   // TODO(jsirianni): We should start using semver
-  default     = "projects/blue-medoras-public-project/global/images/bindplane-ee-82656db3"
+  default     = "projects/blue-medoras-public-project/global/images/bindplane-ee-1-88-4"
   description = "The image to use for the boot disk."
 }
 

@@ -30,7 +30,7 @@ spec:
       - name: image
         description: The image to use for the boot disk.
         varType: string
-        defaultValue: projects/blue-medoras-public-project/global/images/bindplane-ee-82656db3
+        defaultValue: projects/blue-medoras-public-project/global/images/bindplane-ee-1-88-4
       - name: license
         description: The license key for the BindPlane software.
         varType: string
