@@ -205,19 +205,14 @@ helm upgrade \
 
 ### Ingress
 
-If you want to expose Bindplane to the internet, you can use an Ingress resource.
+To expose Bindplane to the internet, you can use an NGINX Ingress controller.
+
+**Prerequisite:** Install the NGINX Ingress controller by following the [official installation guide](https://kubernetes.github.io/ingress-nginx/deploy/).
+
 Create the file `ingress.yaml` with the following content:
 
 ```bash
 # ingress.yaml
----
-apiVersion: cloud.google.com/v1
-kind: BackendConfig
-metadata:
-  name: bindplane-backend-config
-  namespace: bindplane
-spec:
-  timeoutSec: 3600
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -225,11 +220,7 @@ metadata:
   name: bindplane-ingress
   namespace: bindplane
   annotations:
-    kubernetes.io/ingress.class: "gce"
-    # The IP bindplane-external-ip was created by terraform
-    # in main.tf. Update if you changed the name variable.
-    # "<name>-external-ip"
-    kubernetes.io/ingress.global-static-ip-name: "bindplane-external-ip"
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
   - http:
@@ -255,12 +246,9 @@ Wait for the Ingress to be ready:
 kubectl get ingress -n bindplane
 ```
 
-Once the Ingress is ready, you can access Bindplane at the IP address
-associated with the Ingress. It can take several minutes for the load
-balancer to be provisioned.
+Once the Ingress is ready, you can access Bindplane at the IP address associated with the Ingress. It can take several minutes for the load balancer to be provisioned.
 
-> **_NOTE:_**  The [Bindplane Helm Chart](https://github.com/observIQ/bindplane-op-helm) supports
-ingress directly when a hostname is provided. This example uses a static IP address.
+> **_NOTE:_** The [Bindplane Helm Chart](https://github.com/observIQ/bindplane-op-helm) supports ingress directly when a hostname is provided. This example uses a static IP address.
 
 ## Components Created
 
