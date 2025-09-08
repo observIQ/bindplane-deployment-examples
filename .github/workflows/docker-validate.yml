@@ -57,7 +57,7 @@ jobs:
       # Run Hadolint only if Dockerfiles exist
       - name: Lint Dockerfiles
         if: steps.check_dockerfiles.outputs.dockerfiles_exist == 'true'
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.2.0
         with:
           dockerfile: docker-compose/Dockerfile*
           failure-threshold: error
