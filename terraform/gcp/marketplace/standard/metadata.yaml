@@ -30,7 +30,7 @@ spec:
       - name: image
         description: The image to use for the boot disk.
         varType: string
-        defaultValue: projects/blue-medoras-public-project/global/images/bindplane-ee-1-88-4
+        defaultValue: projects/blue-medoras-public-project/global/images/bindplane-ee-1-95-1
       - name: license
         description: The license key for the BindPlane software.
         varType: string
@@ -41,6 +41,10 @@ spec:
         defaultValue: n2-standard-2
       - name: network
         description: The network to which the instance will be connected.
+        varType: string
+        defaultValue: default
+      - name: subnet
+        description: The subnet to which the instance will be connected.
         varType: string
         defaultValue: default
       - name: project_id
