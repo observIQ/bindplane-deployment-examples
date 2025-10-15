@@ -36,6 +36,7 @@ resource "google_compute_instance" "vm_instance" {
 
   network_interface {
     network = var.network
+    subnetwork = var.subnet
 
     access_config {
       nat_ip = google_compute_address.vm_ip.address
@@ -131,7 +132,7 @@ variable "image" {
   type = string
   // TODO(jsirianni): Understand why a default is needed here
   // TODO(jsirianni): We should start using semver
-  default     = "projects/blue-medoras-public-project/global/images/bindplane-ee-1-88-4"
+  default     = "projects/blue-medoras-public-project/global/images/bindplane-ee-1-95-1"
   description = "The image to use for the boot disk."
 }
 
@@ -163,6 +164,12 @@ variable "network" {
   type        = string
   default     = "default"
   description = "The network to which the instance will be connected."
+}
+
+variable "subnet" {
+  type        = string
+  default     = "default"
+  description = "The subnet to which the instance will be connected."
 }
 
 variable "boot_disk_size_gb" {

@@ -43,6 +43,9 @@ spec:
         region:
           name: region
           title: Region
+        subnet:
+          name: subnet
+          title: Subnet
         zone:
           name: zone
           title: Zone
