@@ -103,7 +103,8 @@ resource "google_compute_instance" "vm_instance" {
         retentionDays: 30
       CONFIG
 
-      sudo systemctl enable bindplane
+      sudo systemctl daemon-reload
+      sudo systemctl enable --now bindplane
 
       touch "$LOCK_FILE"
       chown root:root "$LOCK_FILE"
